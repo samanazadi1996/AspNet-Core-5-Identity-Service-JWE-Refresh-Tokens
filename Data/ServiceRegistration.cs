@@ -13,10 +13,10 @@ namespace Data
         public static void AddIdentityInfrastructure(this IServiceCollection services, IdentitySettings settings)
         {
             services.AddDbContext<IdentityContext>(options =>
-            options.UseSqlServer(settings.DataBaseConectionString,
-            x => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "Identity")
-            ));
-            services.AddIdentityCore<ApplicationUser>(options =>
+
+            options.UseSqlServer(settings.DataBaseConectionString, x => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "Identity")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
 
                 //Password Settings
@@ -37,7 +37,9 @@ namespace Data
                 //identityOptions.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 //identityOptions.Lockout.AllowedForNewUsers = false;
             })
-                .AddEntityFrameworkStores<IdentityContext>();
+                .AddEntityFrameworkStores<IdentityContext>()
+                .AddDefaultTokenProviders();
+
         }
     }
 }

@@ -1,16 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
     [ApiVersion("1")]
+    [ApiController]
+    [ApiResultFilter]
+    [Route("api/v1/[controller]/[action]")]
     public class AccountController : ControllerBase
     {
         // GET: api/<ValuesController>

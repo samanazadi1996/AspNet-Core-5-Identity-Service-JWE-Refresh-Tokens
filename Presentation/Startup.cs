@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Services;
+using WebFramework.Configuration;
 using WebFramework.Middlewares;
 using WebFramework.Swagger;
 
@@ -29,7 +31,9 @@ namespace Presentation
         {
             services.AddIdentityInfrastructure(_SiteSettings.identitySettings);
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
+            services.AddApplicationServices();
             services.AddControllersWithViews();
+            services.AddJwtAuthentication(_SiteSettings.JwtSettings);
             services.AddSwagger();
 
         }

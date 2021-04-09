@@ -1,0 +1,16 @@
+﻿@model SignInViewModel
+@{
+    ViewData["Title"] = "login";
+}
+<form  method="post">
+
+
+<div class="text-center">
+    <input asp-for="UserName" />
+    <input asp-for="Password" />
+    <input asp-for="ReMemberMe" />
+    <input type="hidden" asp-for="UrlCallBack" />
+    <input type="submit" value="GO" />
+</div>
+
+</form>

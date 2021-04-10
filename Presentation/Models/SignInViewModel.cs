@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Presentation.Models
 {
+
     public class SignInViewModel
     {
-
         [Display(Name = "نام کاربری")]
         [Required(ErrorMessage = "پرکردن فیلد {0} اجباری است")]
         public string UserName { get; set; }

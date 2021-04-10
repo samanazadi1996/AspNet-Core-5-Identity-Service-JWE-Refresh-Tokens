@@ -1,13 +1,13 @@
 ﻿using Common;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Services.JWTServices.Abstraction;
+using Services.JWTDomain.Abstraction;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace Services.JWTServices.Implementation
+namespace Services.JWTDomain.Implementation
 {
     public class GetClaimsByTokenService : IGetClaimsByTokenService
     {

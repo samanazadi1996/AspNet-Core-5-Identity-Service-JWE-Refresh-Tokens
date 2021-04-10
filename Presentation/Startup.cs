@@ -1,5 +1,6 @@
 using Common;
 using Data;
+using Data.Repositores;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,6 +31,7 @@ namespace Presentation
         {
             services.AddIdentityInfrastructure(_SiteSettings.identitySettings);
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
+            services.AddRepositoryServices();
             services.AddApplicationServices();
             services.AddControllersWithViews();
             services.AddJwtAuthentication(_SiteSettings.JwtSettings);
@@ -50,7 +52,6 @@ namespace Presentation
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();

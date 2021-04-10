@@ -5,6 +5,18 @@ namespace Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public RefreshToken? RefreshTokens { get; set; }
+        private RefreshToken refreshToken;
+
+        public RefreshToken GetRefreshToken()
+        {
+            return refreshToken;
+        }
+
+        public void SetRefreshToken(RefreshToken value)
+        {
+            refreshToken = value;
+        }
+
+        public int? RefreshTokenId { get; set; }
     }
 }

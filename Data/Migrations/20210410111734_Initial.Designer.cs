@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210410091839_Initial")]
+    [Migration("20210410111734_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,7 +64,7 @@ namespace Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RefreshTokensId")
+                    b.Property<int?>("RefreshTokenId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -87,7 +87,7 @@ namespace Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("RefreshTokensId");
+                    b.HasIndex("RefreshTokenId");
 
                     b.ToTable("User");
                 });
@@ -249,11 +249,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("Entities.RefreshToken", "RefreshTokens")
+                    b.HasOne("Entities.RefreshToken", "RefreshToken")
                         .WithMany()
-                        .HasForeignKey("RefreshTokensId");
+                        .HasForeignKey("RefreshTokenId");
 
-                    b.Navigation("RefreshTokens");
+                    b.Navigation("RefreshToken");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

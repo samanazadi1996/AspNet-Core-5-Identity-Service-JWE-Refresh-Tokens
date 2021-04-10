@@ -1,18 +1,13 @@
 ﻿using Entities;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Presentation.Infrastracture;
 using Presentation.Models;
-using Services.JWTServices.Abstraction;
+using Services.JWTDomain.Abstraction;
+using Services.RefreshTokenDomain.Abstraction;
 using System;
-using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Presentation.Controllers
@@ -23,17 +18,19 @@ namespace Presentation.Controllers
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
         private readonly IJwtService jwtService;
+        private readonly IGenerateResreshTokenService generateResreshTokenService;
 
         public AccountController(ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IJwtService jwtService
-            )
+            IJwtService jwtService,
+            IGenerateResreshTokenService generateResreshTokenService)
         {
             _logger = logger;
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.jwtService = jwtService;
+            this.generateResreshTokenService = generateResreshTokenService;
         }
 
         public IActionResult Login(string urlCallBack)
@@ -46,6 +43,7 @@ namespace Presentation.Controllers
         {
             if (!ModelState.IsValid)
                 return View(model);
+
             var user = await userManager.FindByNameAsync(model.UserName);
             if (user is null)
                 ModelState.AddModelError(nameof(model.UserName), "نام کاربری اشتباه است");
@@ -54,13 +52,11 @@ namespace Presentation.Controllers
             if (!IsPasswordValid)
                 ModelState.AddModelError(nameof(model.UserName), "رمز عبور اشتباه است");
 
-            var token = await jwtService.GenerateAsync(user);
-            if (string.IsNullOrEmpty(token))
-                return BadRequest();
-
             if (ModelState.IsValid)
             {
-                var refreshtoken = "salam";
+                var token = await jwtService.GenerateAsync(user);
+                var RefreshtokenGuid = await generateResreshTokenService.Generate(user, "my ip");
+                var refreshtoken = Convert.ToString(RefreshtokenGuid);
                 NameValueCollection datacollection = new NameValueCollection();
                 datacollection.Add("token", token);
                 datacollection.Add("refreshtoken", refreshtoken);

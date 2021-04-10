@@ -48,7 +48,7 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RefreshTokensId = table.Column<int>(type: "int", nullable: true),
+                    RefreshTokenId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -68,8 +68,8 @@ namespace Data.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_User_RefreshTokens_RefreshTokensId",
-                        column: x => x.RefreshTokensId,
+                        name: "FK_User_RefreshTokens_RefreshTokenId",
+                        column: x => x.RefreshTokenId,
                         principalSchema: "Identity",
                         principalTable: "RefreshTokens",
                         principalColumn: "Id",
@@ -214,10 +214,10 @@ namespace Data.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_User_RefreshTokensId",
+                name: "IX_User_RefreshTokenId",
                 schema: "Identity",
                 table: "User",
-                column: "RefreshTokensId");
+                column: "RefreshTokenId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

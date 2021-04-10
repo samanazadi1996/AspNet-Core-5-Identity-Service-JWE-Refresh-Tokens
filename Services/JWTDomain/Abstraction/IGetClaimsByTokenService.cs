@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Services.JWTServices.Abstraction
+namespace Services.JWTDomain.Abstraction
 {
     public interface IGetClaimsByTokenService
     {

@@ -62,7 +62,7 @@ namespace Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RefreshTokensId")
+                    b.Property<int?>("RefreshTokenId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -85,7 +85,7 @@ namespace Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("RefreshTokensId");
+                    b.HasIndex("RefreshTokenId");
 
                     b.ToTable("User");
                 });
@@ -247,11 +247,11 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("Entities.RefreshToken", "RefreshTokens")
+                    b.HasOne("Entities.RefreshToken", "RefreshToken")
                         .WithMany()
-                        .HasForeignKey("RefreshTokensId");
+                        .HasForeignKey("RefreshTokenId");
 
-                    b.Navigation("RefreshTokens");
+                    b.Navigation("RefreshToken");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

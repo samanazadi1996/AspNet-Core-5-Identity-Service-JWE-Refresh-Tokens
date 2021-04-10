@@ -22,7 +22,7 @@ namespace Data
                 //Password Settings
                 options.Password.RequireDigit = settings.PasswordRequireDigit;
                 options.Password.RequiredLength = settings.PasswordRequiredLength;
-                options.Password.RequireNonAlphanumeric = settings.PasswordRequireNonAlphanumic; //#@!
+                options.Password.RequireNonAlphanumeric = settings.PasswordRequireNonAlphanumic;
                 options.Password.RequireUppercase = settings.PasswordRequireUppercase;
                 options.Password.RequireLowercase = settings.PasswordRequireLowercase;
 

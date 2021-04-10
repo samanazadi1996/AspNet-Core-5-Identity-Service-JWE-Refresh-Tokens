@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Services.JWTServices;
+using Services.JWTDomain;
+using Services.RefreshTokenDomain;
 
 namespace Services
 {
@@ -8,6 +9,7 @@ namespace Services
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddJWTService();
+            services.AddRefreshTokenServices();
             return services;
         }
     }

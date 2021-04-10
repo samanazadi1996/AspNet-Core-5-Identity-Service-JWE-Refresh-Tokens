@@ -1,7 +1,7 @@
 ﻿using Entities;
 using System.Threading.Tasks;
 
-namespace Services.JWTServices.Abstraction
+namespace Services.JWTDomain.Abstraction
 {
     public interface IJwtService
     {

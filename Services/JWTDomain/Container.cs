@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Services.JWTServices.Abstraction;
-using Services.JWTServices.Implementation;
+using Services.JWTDomain.Abstraction;
+using Services.JWTDomain.Implementation;
 
-namespace Services.JWTServices
+namespace Services.JWTDomain
 {
     public static class Container
     {

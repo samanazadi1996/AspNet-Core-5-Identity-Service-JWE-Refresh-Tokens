@@ -11,6 +11,23 @@ namespace Data.Migrations
                 name: "Identity");
 
             migrationBuilder.CreateTable(
+                name: "RefreshTokens",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Token = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpireDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreateDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Role",
                 schema: "Identity",
                 columns: table => new
@@ -31,6 +48,7 @@ namespace Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RefreshTokensId = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -49,6 +67,13 @@ namespace Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_User_RefreshTokens_RefreshTokensId",
+                        column: x => x.RefreshTokensId,
+                        principalSchema: "Identity",
+                        principalTable: "RefreshTokens",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,34 +97,6 @@ namespace Data.Migrations
                         principalTable: "Role",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RefreshTokens",
-                schema: "Identity",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Token = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Expires = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Revoked = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RevokedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReplacedByToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RefreshTokens_User_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalSchema: "Identity",
-                        principalTable: "User",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -197,12 +194,6 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshTokens_ApplicationUserId",
-                schema: "Identity",
-                table: "RefreshTokens",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 schema: "Identity",
                 table: "Role",
@@ -221,6 +212,12 @@ namespace Data.Migrations
                 schema: "Identity",
                 table: "User",
                 column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_RefreshTokensId",
+                schema: "Identity",
+                table: "User",
+                column: "RefreshTokensId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -252,10 +249,6 @@ namespace Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RefreshTokens",
-                schema: "Identity");
-
-            migrationBuilder.DropTable(
                 name: "RoleClaims",
                 schema: "Identity");
 
@@ -281,6 +274,10 @@ namespace Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "User",
+                schema: "Identity");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens",
                 schema: "Identity");
         }
     }

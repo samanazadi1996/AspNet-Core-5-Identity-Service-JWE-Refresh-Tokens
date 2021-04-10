@@ -9,16 +9,15 @@ namespace Presentation.Models
     public class SignInViewModel
     {
 
-        [Display(Name ="نام کاربری")]
-        [EmailAddress(ErrorMessage = "{0} نامعتبر است")]
-        [Required(ErrorMessage ="پرکردن فیلد {0} اجباری است")]
+        [Display(Name = "نام کاربری")]
+        [Required(ErrorMessage = "پرکردن فیلد {0} اجباری است")]
         public string UserName { get; set; }
 
         [Display(Name = "گذرواژه")]
-        [Required(ErrorMessage ="پرکردن فیلد {0} اجباری است")]
+        [Required(ErrorMessage = "پرکردن فیلد {0} اجباری است")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-        
+
         public bool ReMemberMe { get; set; }
 
         public string UrlCallBack { get; set; }

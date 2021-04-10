@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Services.CommonServices;
 using Services.JWTServices;
 
 namespace Services
@@ -8,7 +7,6 @@ namespace Services
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddCommonService();
             services.AddJWTService();
             return services;
         }

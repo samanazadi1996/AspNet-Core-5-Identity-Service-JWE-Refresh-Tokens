@@ -62,6 +62,9 @@ namespace Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("RefreshTokensId")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -82,6 +85,8 @@ namespace Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("RefreshTokensId");
+
                     b.ToTable("User");
                 });
 
@@ -92,33 +97,19 @@ namespace Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime>("CreateDateTime")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("CreatedByIp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Expires")
+                    b.Property<DateTime>("ExpireDateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ReplacedByToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Revoked")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RevokedByIp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("Token")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -254,11 +245,13 @@ namespace Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Entities.RefreshToken", b =>
+            modelBuilder.Entity("Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("Entities.ApplicationUser", null)
-                        .WithMany("RefreshTokens")
-                        .HasForeignKey("ApplicationUserId");
+                    b.HasOne("Entities.RefreshToken", "RefreshTokens")
+                        .WithMany()
+                        .HasForeignKey("RefreshTokensId");
+
+                    b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -310,11 +303,6 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Entities.ApplicationUser", b =>
-                {
-                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,7 @@ namespace Services.JWTServices
         public static IServiceCollection AddJWTService(this IServiceCollection services)
         {
             services.AddTransient(typeof(IJwtService), typeof(JwtService));
+            services.AddTransient(typeof(IGetClaimsByTokenService), typeof(GetClaimsByTokenService));
 
             return services;
         }

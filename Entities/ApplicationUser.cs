@@ -5,6 +5,6 @@ namespace Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public List<RefreshToken> RefreshTokens { get; set; }
+        public RefreshToken? RefreshTokens { get; set; }
     }
 }

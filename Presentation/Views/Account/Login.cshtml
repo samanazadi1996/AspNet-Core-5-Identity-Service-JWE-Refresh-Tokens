@@ -2,15 +2,53 @@
 @{
     ViewData["Title"] = "login";
 }
-<form  method="post">
-
-
-<div class="text-center">
-    <input asp-for="UserName" />
-    <input asp-for="Password" />
-    <input asp-for="ReMemberMe" />
-    <input type="hidden" asp-for="UrlCallBack" />
-    <input type="submit" value="GO" />
+<div class="body">
+    <div class="veen">
+        <div class="login-btn splits">
+            <p>Already an user?</p>
+            <button class="active">Login</button>
+        </div>
+        <div class="rgstr-btn splits">
+            <p>Don't have an account?</p>
+            <button>Register</button>
+        </div>
+        <div class="wrapper">
+            <form id="login" method="post" tabindex="500">
+                <h3>Login</h3>
+                <div class="mail">
+                    <input asp-for="UserName" autocomplete="off">
+                    <label asp-for="UserName">Username</label>
+                </div>
+                <div class="passwd">
+                    <input asp-for="Password" autocomplete="off">
+                    <label asp-for="Password">Password</label>
+                </div>
+                <div class="submit">
+                    <button class="dark">Login</button>
+                </div>
+            </form>
+            <form id="register" tabindex="502">
+                <h3>Register</h3>
+                <div class="name">
+                    <input type="text" name="">
+                    <label>Full Name</label>
+                </div>
+                <div class="mail">
+                    <input type="text" name="">
+                    <label>Mail</label>
+                </div>
+                <div class="uid">
+                    <input type="text" name="">
+                    <label>User Name</label>
+                </div>
+                <div class="passwd">
+                    <input type="password" name="">
+                    <label>Password</label>
+                </div>
+                <div class="submit">
+                    <button class="dark">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
-
-</form>

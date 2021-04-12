@@ -21,15 +21,18 @@ namespace Presentation.Controllers.V1
     [Route("api/v1/[controller]/[action]")]
     public class UserController : ControllerBase
     {
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public UserController()
+        public UserController(UserManager<ApplicationUser> userManager)
         {
+            this.userManager = userManager;
         }
-        [HttpPost]
-        public async Task<IActionResult> GetUsers(TokensDTO model)
-        {
 
-            return Ok("xcvbnm");
+        [HttpGet]
+        public IActionResult GetUsers()
+        {
+            var result = userManager.Users.Select(p => new SelectListDTO { Value = p.Id, Text = p.UserName }).AsEnumerable();
+            return Ok(result);
         }
     }
 }

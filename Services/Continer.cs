@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Services.JWTDomain;
 using Services.RefreshTokenDomain;
+using Services.TextEncryptionDomain;
 
 namespace Services
 {
@@ -10,6 +11,8 @@ namespace Services
         {
             services.AddJWTService();
             services.AddRefreshTokenServices();
+            services.AddTextEncryptionServices();
+
             return services;
         }
     }

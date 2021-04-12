@@ -66,6 +66,7 @@ namespace Presentation.Controllers.V1
             }
 
             response.name = result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            response.userId = result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
             response.roles = string.Join(",", result.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value));
 
             return Ok(response);

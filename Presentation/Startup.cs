@@ -29,7 +29,7 @@ namespace Presentation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentityInfrastructure(_SiteSettings.identitySettings);
+            services.AddIdentityInfrastructure(_SiteSettings.IdentitySettings);
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
             services.AddRepositoryServices();
             services.AddApplicationServices();
@@ -60,6 +60,7 @@ namespace Presentation
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

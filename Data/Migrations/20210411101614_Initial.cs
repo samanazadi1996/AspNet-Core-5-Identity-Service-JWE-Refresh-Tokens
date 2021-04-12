@@ -20,7 +20,8 @@ namespace Data.Migrations
                     Token = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExpireDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     CreateDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    CreatedByIp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -217,7 +218,9 @@ namespace Data.Migrations
                 name: "IX_User_RefreshTokenId",
                 schema: "Identity",
                 table: "User",
-                column: "RefreshTokenId");
+                column: "RefreshTokenId",
+                unique: true,
+                filter: "[RefreshTokenId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

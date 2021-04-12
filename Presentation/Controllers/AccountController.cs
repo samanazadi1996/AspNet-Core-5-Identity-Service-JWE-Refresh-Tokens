@@ -17,18 +17,21 @@ namespace Presentation.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IJwtService jwtService;
         private readonly IGenerateResreshTokenService generateResreshTokenService;
 
         public AccountController(ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
             IJwtService jwtService,
             IGenerateResreshTokenService generateResreshTokenService)
         {
             _logger = logger;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.roleManager = roleManager;
             this.jwtService = jwtService;
             this.generateResreshTokenService = generateResreshTokenService;
         }
@@ -54,8 +57,9 @@ namespace Presentation.Controllers
 
             if (ModelState.IsValid)
             {
+                var myIp = GetCurrentIpAddressExtention.Get(HttpContext);
                 var token = await jwtService.GenerateAsync(user);
-                var RefreshtokenGuid = await generateResreshTokenService.Generate(user, "my ip");
+                var RefreshtokenGuid = await generateResreshTokenService.Generate(user, myIp);
                 var refreshtoken = Convert.ToString(RefreshtokenGuid);
                 NameValueCollection datacollection = new NameValueCollection();
                 datacollection.Add("token", token);
@@ -66,10 +70,15 @@ namespace Presentation.Controllers
 
             return View(model);
         }
-        public IActionResult aaaa()
+        public async Task<IActionResult> qqq(SignInViewModel model)
         {
-            var user = new ApplicationUser() { Email = "admin@admin.com", UserName = "saman", PhoneNumber = "09304241296" };
-            var op = userManager.CreateAsync(user, "123456").Result;
+            var user = new ApplicationUser() { Email = "saman@admin.com", UserName = "saman", PhoneNumber = "09123456789" };
+            await userManager.CreateAsync(user, "123456");
+            await roleManager.CreateAsync(new IdentityRole() { Id = "admin", Name = "admin" });
+            await roleManager.CreateAsync(new IdentityRole() { Id = "developer", Name = "developer" });
+            await roleManager.CreateAsync(new IdentityRole() { Id = "customer", Name = "customer" });
+            await userManager.AddToRoleAsync(user, "admin");
+            await userManager.AddToRoleAsync(user, "developer");
 
             return RedirectToAction("login");
         }

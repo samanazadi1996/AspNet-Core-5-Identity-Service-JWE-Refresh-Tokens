@@ -8,6 +8,13 @@
     transition: all .5s;
     padding: 1px;
 }
+.w-20 {
+    width: 20px;
+}
+
+.p-l-20 {
+    padding-left: 20px;
+}
 
 .veen {
     width: 70%;
@@ -28,7 +35,6 @@
 
     .veen button {
         background: transparent;
-        //background-image: linear-gradient(90deg, #e0b722, #ff4931);
         display: inline-block;
         padding: 10px 30px;
         border: 3px solid #fff;
@@ -36,7 +42,6 @@
         background-clip: padding-box;
         position: relative;
         color: #FFF;
-        //box-shadow: 0 0 4px rgba(0,0,0,.14), 0 4px 8px rgba(0,0,0,.28);
         transition: all .25s;
     }
 
@@ -208,3 +213,4 @@
 input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
     box-shadow: inset 0 0 0 50px #fff
 }
+

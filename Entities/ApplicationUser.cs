@@ -1,22 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        private RefreshToken refreshToken;
+        public RefreshToken RefreshToken { get; set; }
 
-        public RefreshToken GetRefreshToken()
-        {
-            return refreshToken;
-        }
-
-        public void SetRefreshToken(RefreshToken value)
-        {
-            refreshToken = value;
-        }
-
+        [ForeignKey("RefreshToken")]
         public int? RefreshTokenId { get; set; }
     }
 }

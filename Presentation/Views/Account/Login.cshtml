@@ -14,14 +14,19 @@
         </div>
         <div class="wrapper">
             <form id="login" method="post" tabindex="500">
+                <input asp-for="UrlCallBack" type="hidden">
                 <h3>Login</h3>
                 <div class="mail">
-                    <input asp-for="UserName" autocomplete="off">
+                    <input asp-for="UserName" autocomplete="off" value="saman">
                     <label asp-for="UserName">Username</label>
                 </div>
                 <div class="passwd">
-                    <input asp-for="Password" autocomplete="off">
+                    <input asp-for="Password" autocomplete="off" value="123456">
                     <label asp-for="Password">Password</label>
+                </div>
+                <div class="ReMemberMe text-left">
+                    <input asp-for="ReMemberMe" autocomplete="off" style="width: 20px;margin-left: 20px">
+                    <label asp-for="ReMemberMe">ReMemberMe</label>
                 </div>
                 <div class="submit">
                     <button class="dark">Login</button>

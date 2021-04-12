@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210410111734_Initial")]
+    [Migration("20210411101614_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -87,7 +87,9 @@ namespace Data.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("RefreshTokenId");
+                    b.HasIndex("RefreshTokenId")
+                        .IsUnique()
+                        .HasFilter("[RefreshTokenId] IS NOT NULL");
 
                     b.ToTable("User");
                 });
@@ -110,6 +112,9 @@ namespace Data.Migrations
 
                     b.Property<Guid>("Token")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -250,8 +255,8 @@ namespace Data.Migrations
             modelBuilder.Entity("Entities.ApplicationUser", b =>
                 {
                     b.HasOne("Entities.RefreshToken", "RefreshToken")
-                        .WithMany()
-                        .HasForeignKey("RefreshTokenId");
+                        .WithOne("User")
+                        .HasForeignKey("Entities.ApplicationUser", "RefreshTokenId");
 
                     b.Navigation("RefreshToken");
                 });
@@ -305,6 +310,11 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.RefreshToken", b =>
+                {
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

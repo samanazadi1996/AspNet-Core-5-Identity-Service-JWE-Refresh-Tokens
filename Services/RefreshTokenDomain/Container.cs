@@ -9,6 +9,7 @@ namespace Services.RefreshTokenDomain
         public static IServiceCollection AddRefreshTokenServices(this IServiceCollection services)
         {
             services.AddTransient(typeof(IGenerateResreshTokenService), typeof(GenerateResreshTokenService));
+            services.AddTransient(typeof(IGetRefreshTokenService), typeof(GetRefreshTokenService));
 
             return services;
         }

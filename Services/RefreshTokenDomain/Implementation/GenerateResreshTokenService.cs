@@ -19,13 +19,14 @@ namespace Services.RefreshTokenDomain.Implementation
             var refreshTokenValue = Guid.NewGuid();
             if (user.RefreshTokenId is null)
             {
-                user.SetRefreshToken(new RefreshToken()
+                user.RefreshToken = new RefreshToken()
                 {
                     CreatedByIp = ipAddress,
                     CreateDateTime = DateTime.Now,
                     ExpireDateTime = DateTime.Now.AddDays(1),
-                    Token = refreshTokenValue
-                });
+                    Token = refreshTokenValue,
+                    UserId = user.Id
+                };
             }
             else
             {

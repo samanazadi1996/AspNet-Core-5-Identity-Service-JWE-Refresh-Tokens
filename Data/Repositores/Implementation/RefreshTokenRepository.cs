@@ -4,6 +4,7 @@
     using Data.Repositores.Abstraction;
     using Entities;
     using Microsoft.EntityFrameworkCore;
+    using System;
     using System.Threading.Tasks;
 
     public class RefreshTokenRepository : IRefreshTokenRepository
@@ -33,5 +34,9 @@
             await identityContext.SaveChangesAsync();
         }
 
+        public async Task<RefreshToken> GetBytoken(Guid token)
+        {
+            return await DbSet.FirstOrDefaultAsync(p => p.Token == token);
+        }
     }
 }

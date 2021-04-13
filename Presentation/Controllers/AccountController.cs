@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Presentation.Infrastracture;
 using Presentation.Models;
+using Services.CryptographyDomain.Abstraction;
 using Services.JWTDomain.Abstraction;
 using Services.RefreshTokenDomain.Abstraction;
-using Services.TextEncryptionDomain.Abstraction;
 using System;
 using System.Collections.Specialized;
 using System.Threading.Tasks;
@@ -22,7 +22,6 @@ namespace Presentation.Controllers
         private readonly IJwtService jwtService;
         private readonly IGenerateResreshTokenService generateResreshTokenService;
         private readonly IDecryptService decryptService;
-        private readonly IEncryptService encryptService;
 
         public AccountController(ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager,
@@ -30,7 +29,7 @@ namespace Presentation.Controllers
             RoleManager<IdentityRole> roleManager,
             IJwtService jwtService,
             IGenerateResreshTokenService generateResreshTokenService,
-            IDecryptService decryptService, IEncryptService encryptService
+            IDecryptService decryptService
             )
         {
             _logger = logger;
@@ -40,13 +39,10 @@ namespace Presentation.Controllers
             this.jwtService = jwtService;
             this.generateResreshTokenService = generateResreshTokenService;
             this.decryptService = decryptService;
-            this.encryptService = encryptService;
         }
 
         public IActionResult Login(string urlCallBack)
         {
-            encryptService.Encrypt("sad");
-            var username = User.Identity.Name;
             return View(new SignInViewModel() { UrlCallBack = urlCallBack });
         }
         [HttpPost]
@@ -61,7 +57,7 @@ namespace Presentation.Controllers
 
             var IsPasswordValid = await userManager.CheckPasswordAsync(user, model.Password);
             if (!IsPasswordValid)
-                ModelState.AddModelError(nameof(model.UserName), "رمز عبور اشتباه است");
+                ModelState.AddModelError(nameof(model.Password), "رمز عبور اشتباه است");
 
             if (ModelState.IsValid)
             {
@@ -72,6 +68,8 @@ namespace Presentation.Controllers
                 NameValueCollection datacollection = new NameValueCollection();
                 datacollection.Add("token", token);
                 datacollection.Add("refreshtoken", refreshtoken);
+
+                //var UrlCallBack = decryptService.Decrypt(model.urlCallBack);
                 var str = FormPostExtention.PreparePostForm(model.UrlCallBack, datacollection);
                 return Content(str, "text/html");
             }

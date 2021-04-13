@@ -19,10 +19,17 @@
                 <div class="mail">
                     <input asp-for="UserName" autocomplete="off" value="saman">
                     <label asp-for="UserName">Username</label>
+                    <div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
                 </div>
+
                 <div class="passwd">
                     <input asp-for="Password" autocomplete="off" value="123456">
                     <label asp-for="Password">Password</label>
+                    <div>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
                 </div>
                 <div class="ReMemberMe text-left">
                     <input asp-for="ReMemberMe" autocomplete="off" style="width: 20px;margin-left: 20px">

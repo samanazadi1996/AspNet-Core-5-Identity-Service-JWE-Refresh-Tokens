@@ -1,10 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Services.RefreshTokenDomain.Abstraction;
-using Services.RefreshTokenDomain.Implementation;
-using Services.TextEncryptionDomain.Abstraction;
-using Services.TextEncryptionDomain.Implementation;
+using Services.CryptographyDomain.Abstraction;
+using Services.CryptographyDomain.Implementation;
 
-namespace Services.TextEncryptionDomain
+namespace Services.CryptographyDomain
 {
     public static class Container
     {

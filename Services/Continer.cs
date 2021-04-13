@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Services.CryptographyDomain;
 using Services.JWTDomain;
 using Services.RefreshTokenDomain;
-using Services.TextEncryptionDomain;
 
 namespace Services
 {

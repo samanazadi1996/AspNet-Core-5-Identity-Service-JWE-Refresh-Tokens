@@ -1,4 +1,4 @@
-﻿namespace Services.TextEncryptionDomain.Abstraction
+﻿namespace Services.CryptographyDomain.Abstraction
 {
     public interface IEncryptService
     {

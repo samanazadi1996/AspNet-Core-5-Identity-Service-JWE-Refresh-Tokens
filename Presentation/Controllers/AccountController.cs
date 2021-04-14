@@ -64,14 +64,12 @@ namespace Presentation.Controllers
                 var myIp = GetCurrentIpAddressExtention.Get(HttpContext);
                 var token = await jwtService.GenerateAsync(user);
                 var RefreshtokenGuid = await generateResreshTokenService.Generate(user, myIp);
-                var refreshtoken = Convert.ToString(RefreshtokenGuid);
                 NameValueCollection datacollection = new NameValueCollection();
                 datacollection.Add("token", token);
-                datacollection.Add("refreshtoken", refreshtoken);
+                datacollection.Add("refreshtoken", Convert.ToString(RefreshtokenGuid));
 
-                //var UrlCallBack = decryptService.Decrypt(model.urlCallBack);
-                var str = FormPostExtention.PreparePostForm(model.UrlCallBack, datacollection);
-                return Content(str, "text/html");
+                var form = FormPostExtention.PreparePostForm(model.UrlCallBack, datacollection);
+                return Content(form, "text/html");
             }
 
             return View(model);

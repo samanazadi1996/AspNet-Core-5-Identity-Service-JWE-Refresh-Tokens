@@ -21,8 +21,6 @@ namespace Data.Contexts
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "User");
-                entity.HasOne(x => x.RefreshToken)
-                .WithOne(x => x.User);
             });
 
             builder.Entity<IdentityRole>(entity =>
@@ -56,10 +54,10 @@ namespace Data.Contexts
 
             builder.Entity<RefreshToken>(entity =>
             {
-                entity.HasKey(p => p.Id);
-                entity.HasOne(x => x.User)
-                .WithOne(x => x.RefreshToken);
-
+                entity.HasOne(current => current.User)
+                .WithMany(current => current.RefreshTokens)
+                .HasForeignKey(current => current.UserId)
+                .IsRequired();
             });
         }
     }

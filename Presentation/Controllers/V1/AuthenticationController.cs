@@ -26,15 +26,17 @@ namespace Presentation.Controllers.V1
         private readonly IGenerateResreshTokenService generateResreshTokenService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IJwtService jwtService;
+        private readonly IUpdateResreshTokenService updateResreshTokenService;
 
 
-        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, IGenerateResreshTokenService generateResreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService)
+        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, IGenerateResreshTokenService generateResreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService, IUpdateResreshTokenService updateResreshTokenService)
         {
             this.getClaimsByTokenService = getClaimsByTokenService;
             this.getRefreshTokenService = getRefreshTokenService;
             this.generateResreshTokenService = generateResreshTokenService;
             this.userManager = userManager;
             this.jwtService = jwtService;
+            this.updateResreshTokenService = updateResreshTokenService;
         }
         [HttpPost]
         public async Task<IActionResult> Authenticate(TokensDTO model)
@@ -50,11 +52,11 @@ namespace Presentation.Controllers.V1
                 {
                     return BadRequest();
                 }
-                var newRefreshToken = await generateResreshTokenService.Generate(user, GetCurrentIpAddressExtention.Get(HttpContext));
+                var newRefreshToken = await updateResreshTokenService.Update(model.refreshToken, GetCurrentIpAddressExtention.Get(HttpContext));
                 var newJWT = await jwtService.GenerateAsync(user);
-                response.newData = new NewTokensDTO()
+                response.newData = new TokensDTO()
                 {
-                    refreshToken = Convert.ToString(newRefreshToken),
+                    refreshToken = newRefreshToken,
                     token = newJWT
                 };
                 result = getClaimsByTokenService.Get(newJWT);

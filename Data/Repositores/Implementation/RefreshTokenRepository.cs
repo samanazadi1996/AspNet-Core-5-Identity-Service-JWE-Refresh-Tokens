@@ -5,23 +5,21 @@
     using Entities;
     using Microsoft.EntityFrameworkCore;
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class RefreshTokenRepository : IRefreshTokenRepository
     {
         private readonly IdentityContext identityContext;
-        private DbSet<RefreshToken> DbSet { get; set; }
 
         public RefreshTokenRepository(IdentityContext identityContext)
         {
             this.identityContext = identityContext;
-            DbSet = this.identityContext.Set<RefreshToken>();
         }
-
 
         public async Task<RefreshToken> GetById(int id)
         {
-            return await DbSet.FindAsync(id);
+            return await identityContext.RefreshTokens.FindAsync(id);
         }
 
         public virtual void Save()
@@ -36,7 +34,13 @@
 
         public async Task<RefreshToken> GetBytoken(Guid token)
         {
-            return await DbSet.FirstOrDefaultAsync(p => p.Token == token);
+            return await identityContext.RefreshTokens.FirstOrDefaultAsync(p => p.Token == token);
+        }
+
+        public async Task Create(RefreshToken refreshToken)
+        {
+            await identityContext.RefreshTokens.AddAsync(refreshToken);
+            await SaveAsync();
         }
     }
 }

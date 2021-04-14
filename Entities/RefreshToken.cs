@@ -12,9 +12,8 @@ namespace Entities
         public bool IsExpired => DateTime.Now >= ExpireDateTime;
         public DateTime CreateDateTime { get; set; }
         public string CreatedByIp { get; set; }
-        public ApplicationUser User { get; set; }
 
-        [ForeignKey("User")]
+        public ApplicationUser User { get; set; }
         public string UserId { get; set; }
     }
 }

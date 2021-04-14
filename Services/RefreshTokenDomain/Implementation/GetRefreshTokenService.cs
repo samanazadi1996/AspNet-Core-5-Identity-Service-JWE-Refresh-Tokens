@@ -15,9 +15,9 @@ namespace Services.RefreshTokenDomain.Implementation
             this.refreshTokenRepository = refreshTokenRepository;
         }
 
-        public async Task<RefreshToken> GetByRefreshToken(string refreshToken)
+        public async Task<RefreshToken> GetByRefreshToken(Guid refreshToken)
         {
-            var result = await refreshTokenRepository.GetBytoken(new Guid(refreshToken));
+            var result = await refreshTokenRepository.GetBytoken(refreshToken);
             return result;
         }
     }

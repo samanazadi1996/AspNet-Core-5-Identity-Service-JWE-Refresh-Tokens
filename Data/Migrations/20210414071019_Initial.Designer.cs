@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(IdentityContext))]
-    [Migration("20210411101614_Initial")]
+    [Migration("20210414071019_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,9 +64,6 @@ namespace Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("RefreshTokenId")
-                        .HasColumnType("int");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -86,10 +83,6 @@ namespace Data.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("RefreshTokenId")
-                        .IsUnique()
-                        .HasFilter("[RefreshTokenId] IS NOT NULL");
 
                     b.ToTable("User");
                 });
@@ -114,9 +107,12 @@ namespace Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
                 });
@@ -252,13 +248,15 @@ namespace Data.Migrations
                     b.ToTable("UserTokens");
                 });
 
-            modelBuilder.Entity("Entities.ApplicationUser", b =>
+            modelBuilder.Entity("Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Entities.RefreshToken", "RefreshToken")
-                        .WithOne("User")
-                        .HasForeignKey("Entities.ApplicationUser", "RefreshTokenId");
+                    b.HasOne("Entities.ApplicationUser", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("RefreshToken");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -312,9 +310,9 @@ namespace Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Entities.RefreshToken", b =>
+            modelBuilder.Entity("Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("User");
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

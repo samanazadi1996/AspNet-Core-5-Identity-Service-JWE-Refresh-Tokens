@@ -7,11 +7,6 @@ namespace Presentation.Models
         public string name { get; set; }
         public string roles { get; set; }
         public string userId { get; set; }
-        public NewTokensDTO newData { get; set; }
-    }
-    public class NewTokensDTO
-    {
-        public string token { get; set; }
-        public string refreshToken { get; set; }
+        public TokensDTO newData { get; set; }
     }
 }

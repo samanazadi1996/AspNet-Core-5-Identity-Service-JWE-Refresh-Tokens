@@ -10,6 +10,7 @@ namespace Services.RefreshTokenDomain
         {
             services.AddTransient(typeof(IGenerateResreshTokenService), typeof(GenerateResreshTokenService));
             services.AddTransient(typeof(IGetRefreshTokenService), typeof(GetRefreshTokenService));
+            services.AddTransient(typeof(IUpdateResreshTokenService), typeof(UpdateResreshTokenService));
 
             return services;
         }

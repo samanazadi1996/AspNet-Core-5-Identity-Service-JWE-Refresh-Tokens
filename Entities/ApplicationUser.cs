@@ -6,9 +6,6 @@ namespace Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        public RefreshToken RefreshToken { get; set; }
-
-        [ForeignKey("RefreshToken")]
-        public int? RefreshTokenId { get; set; }
+        public List<RefreshToken> RefreshTokens { get; set; }
     }
 }

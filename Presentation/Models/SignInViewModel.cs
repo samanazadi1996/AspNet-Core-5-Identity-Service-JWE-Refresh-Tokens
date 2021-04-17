@@ -20,6 +20,7 @@ namespace Presentation.Models
 
         public bool ReMemberMe { get; set; }
 
-        public string UrlCallBack { get; set; }
+        [Required]
+        public string Key { get; set; }
     }
 }

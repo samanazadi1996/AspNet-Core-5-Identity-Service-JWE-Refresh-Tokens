@@ -23,55 +23,54 @@ namespace Presentation.Controllers.V1
     {
         private readonly IGetClaimsByTokenService getClaimsByTokenService;
         private readonly IGetRefreshTokenService getRefreshTokenService;
-        private readonly IGenerateResreshTokenService generateResreshTokenService;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IJwtService jwtService;
         private readonly IUpdateResreshTokenService updateResreshTokenService;
 
 
-        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, IGenerateResreshTokenService generateResreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService, IUpdateResreshTokenService updateResreshTokenService)
+        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService, IUpdateResreshTokenService updateResreshTokenService)
         {
             this.getClaimsByTokenService = getClaimsByTokenService;
             this.getRefreshTokenService = getRefreshTokenService;
-            this.generateResreshTokenService = generateResreshTokenService;
             this.userManager = userManager;
             this.jwtService = jwtService;
             this.updateResreshTokenService = updateResreshTokenService;
         }
-        [HttpPost]
-        public async Task<IActionResult> Authenticate(TokensDTO model)
+
+        [HttpGet]
+        public IActionResult Authenticate(string token)
         {
-            var result = getClaimsByTokenService.Get(model.token);
-            var refreshToken = await getRefreshTokenService.GetByRefreshToken(model.refreshToken);
-            var user = await userManager.FindByIdAsync(refreshToken?.UserId);
-
-            var response = new ResponseAuthorizeDTO();
+            var result = getClaimsByTokenService.Get(token);
             if (result is null)
             {
-                if (refreshToken is null || refreshToken.IsExpired)
-                {
-                    return BadRequest();
-                }
-                var newRefreshToken = await updateResreshTokenService.Update(model.refreshToken, GetCurrentIpAddressExtention.Get(HttpContext));
-                var newJWT = await jwtService.GenerateAsync(user);
-                response.newData = new TokensDTO()
-                {
-                    refreshToken = newRefreshToken,
-                    token = newJWT
-                };
-                result = getClaimsByTokenService.Get(newJWT);
+                return Unauthorized();
             }
 
-            if (result is null)
+            var response = new ResponseAuthorizeDTO()
             {
-                return BadRequest();
-            }
-
-            response.name = result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
-            response.userId = result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
-            response.roles = string.Join(",", result.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value));
+                name = result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value,
+                userId = result.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value,
+                roles = string.Join(",", result.Claims.Where(c => c.Type == ClaimTypes.Role).Select(c => c.Value)),
+            };
 
             return Ok(response);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> RefreshToken(Guid refreshToken)
+        {
+            var myIp = GetCurrentIpAddressExtention.Get(HttpContext);
+
+            var refreshTokenModel = await getRefreshTokenService.GetByRefreshToken(refreshToken);
+            if (refreshTokenModel is null || refreshTokenModel.IsExpired)
+            {
+                return Unauthorized();
+            }
+            var newRefreshToken = await updateResreshTokenService.Update(refreshToken, myIp);
+            var user = await userManager.FindByIdAsync(refreshTokenModel?.UserId);
+            var newJWT = await jwtService.GenerateAsync(user);
+
+            return Ok(new TokensDTO() { token = newJWT, refreshToken = newRefreshToken });
         }
     }
 }

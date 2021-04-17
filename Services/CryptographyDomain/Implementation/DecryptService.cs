@@ -22,6 +22,7 @@ namespace Services.CryptographyDomain.Implementation
                 return string.Empty;
 
             byte[] iv = new byte[16];
+            text = text.Replace(" ", "+");
             byte[] buffer = Convert.FromBase64String(text);
 
             using (Aes aes = Aes.Create())

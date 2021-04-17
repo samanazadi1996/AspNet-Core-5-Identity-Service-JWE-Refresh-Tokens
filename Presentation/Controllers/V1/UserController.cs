@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Infrastracture;
@@ -29,6 +30,7 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetUsers()
         {
             var result = userManager.Users.Select(p => new SelectListDTO { Value = p.Id, Text = p.UserName }).AsEnumerable();

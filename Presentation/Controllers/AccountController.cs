@@ -17,7 +17,6 @@ namespace Presentation.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private readonly IJwtService jwtService;
         private readonly IGenerateResreshTokenService generateResreshTokenService;
@@ -25,7 +24,6 @@ namespace Presentation.Controllers
 
         public AccountController(ILogger<AccountController> logger,
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
             RoleManager<IdentityRole> roleManager,
             IJwtService jwtService,
             IGenerateResreshTokenService generateResreshTokenService,
@@ -34,16 +32,15 @@ namespace Presentation.Controllers
         {
             _logger = logger;
             this.userManager = userManager;
-            this.signInManager = signInManager;
             this.roleManager = roleManager;
             this.jwtService = jwtService;
             this.generateResreshTokenService = generateResreshTokenService;
             this.decryptService = decryptService;
         }
 
-        public IActionResult Login(string urlCallBack)
+        public IActionResult Login(string Key)
         {
-            return View(new SignInViewModel() { UrlCallBack = urlCallBack });
+            return View(new SignInViewModel() { Key = Key });
         }
         [HttpPost]
         public async Task<IActionResult> Login(SignInViewModel model)
@@ -67,8 +64,8 @@ namespace Presentation.Controllers
                 NameValueCollection datacollection = new NameValueCollection();
                 datacollection.Add("token", token);
                 datacollection.Add("refreshtoken", Convert.ToString(RefreshtokenGuid));
-
-                var form = FormPostExtention.PreparePostForm(model.UrlCallBack, datacollection);
+                var urlCallBack = decryptService.Decrypt(model.Key);
+                var form = FormPostExtention.PreparePostForm(urlCallBack, datacollection);
                 return Content(form, "text/html");
             }
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 
-namespace Presentation.WebUI.Models.Authentication.Middlewares
+namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
 {
     public static class ApiAuthenticationMiddlewareExtensions
     {

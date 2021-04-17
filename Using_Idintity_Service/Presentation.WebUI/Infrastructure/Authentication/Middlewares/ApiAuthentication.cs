@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
-using Presentation.WebUI.Models.Authentication;
-using Presentation.WebUI.Models.Authentication.DTO;
+using Presentation.WebUI.Infrastructure.Authentication.DTO;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.WebUI.Models.Authentication.Middlewares
+namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
 {
 
     public class ApiAuthentication

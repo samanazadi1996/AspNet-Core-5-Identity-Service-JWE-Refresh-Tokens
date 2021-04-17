@@ -1,6 +1,31 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@inject Presentation.WebUI.Models.Authentication.AuthenticatedUser authenticatedUser;
+@inject Presentation.WebUI.Infrastructure.Authentication.AuthenticatedUser authenticatedUser;
 
-<h1>@authenticatedUser.Name</h1>
+<table class="table table-bordered table-striped table-info table-responsive">
+    <tr>
+        <th>نام</th>
+        <th>توضیحات</th>
+    </tr>
+    <tr>
+        <td>نام کاربر</td>
+        <td>@authenticatedUser.Name</td>
+    </tr>
+    <tr>
+        <td>IsAuthenticated</td>
+        <td>@authenticatedUser.IsAuthenticated</td>
+    </tr>
+    <tr>
+        <td>token</td>
+        <td>@ViewBag.token</td>
+    </tr>
+    <tr>
+        <td>IsInRole</td>
+        <td>
+            admin -> @authenticatedUser.IsInRole("admin")
+            <br />
+            saman -> @authenticatedUser.IsInRole("saman")
+        </td>
+    </tr>
+</table>

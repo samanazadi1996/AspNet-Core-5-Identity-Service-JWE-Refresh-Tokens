@@ -1,0 +1,14 @@
+﻿@model IEnumerable<SelectListDTO>
+<table class="table table-bordered table-striped table-info">
+    <tr>
+        <th>نام</th>
+        <th>شناسه</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Text</td>
+            <td>@item.Value</td>
+        </tr>
+    }
+</table>

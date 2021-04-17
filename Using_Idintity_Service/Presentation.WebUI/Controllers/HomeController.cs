@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Presentation.WebUI.Models;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Presentation.WebUI.Controllers
 {
@@ -20,6 +17,8 @@ namespace Presentation.WebUI.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.token = HttpContext.Session.GetString("token");
+
             return View();
         }
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Presentation.WebUI.Models.Authentication.Services
+namespace Presentation.WebUI.Infrastructure.Authentication.Services
 {
     public static class ApiAuthenticationServicesExtensions
     {

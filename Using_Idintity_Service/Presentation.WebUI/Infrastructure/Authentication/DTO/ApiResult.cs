@@ -1,4 +1,4 @@
-namespace Presentation.WebUI.Models.Authentication.DTO
+namespace Presentation.WebUI.Infrastructure.Authentication.DTO
 {
     public class ApiResult<T>
     {

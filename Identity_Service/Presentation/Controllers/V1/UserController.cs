@@ -1,17 +1,9 @@
 ﻿using Entities;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Infrastracture;
 using Presentation.Models;
-using Services.JWTDomain.Abstraction;
-using Services.RefreshTokenDomain.Abstraction;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1

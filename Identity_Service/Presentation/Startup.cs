@@ -33,9 +33,10 @@ namespace Presentation
             services.Configure<SiteSettings>(Configuration.GetSection(nameof(SiteSettings)));
             services.AddRepositoryServices();
             services.AddApplicationServices();
-            services.AddControllersWithViews();
             services.AddJwtAuthentication(_SiteSettings.JwtSettings);
             services.AddSwagger();
+            services.AddMvc(option => option.EnableEndpointRouting = false);
+
 
         }
 
@@ -58,16 +59,12 @@ namespace Presentation
             app.UseStaticFiles();
 
             app.UseRouting();
-            app.UseAuthorization();
 
             app.UseAuthentication();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
+            app.UseMvc(routes => routes.MapRoute(
                     name: "default",
-                    pattern: "{controller=Account}/{action=Login}/{urlCallBack?}");
-            });
+                    template: "{controller=Home}/{action=Index}/{id?}")
+            );
         }
     }
 }

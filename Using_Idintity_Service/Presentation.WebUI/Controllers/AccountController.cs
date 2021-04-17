@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Presentation.WebUI.Models.Authentication.DTO;
+using Presentation.WebUI.Infrastructure.Authentication.DTO;
 
 namespace Presentation.WebUI.Controllers
 {

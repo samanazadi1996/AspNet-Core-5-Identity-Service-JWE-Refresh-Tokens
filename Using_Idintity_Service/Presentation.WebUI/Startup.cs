@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Presentation.WebUI.Models.Authentication.Middlewares;
-using Presentation.WebUI.Models.Authentication.Services;
+using Presentation.WebUI.Infrastructure.Authentication.Middlewares;
+using Presentation.WebUI.Infrastructure.Authentication.Services;
 
 namespace Presentation.WebUI
 {

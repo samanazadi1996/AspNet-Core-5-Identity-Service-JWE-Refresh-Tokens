@@ -54,6 +54,7 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
             {
                 authenticatedUser.IsAuthenticated = true;
                 authenticatedUser.Name = result.Data.Name;
+                authenticatedUser.UserId = result.Data.UserId;
                 authenticatedUser.Roles = result.Data.Roles;
                 return true;
             }

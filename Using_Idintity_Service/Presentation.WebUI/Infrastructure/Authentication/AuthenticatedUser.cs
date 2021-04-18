@@ -6,6 +6,7 @@ namespace Presentation.WebUI.Infrastructure.Authentication
     public class AuthenticatedUser
     {
         public bool IsAuthenticated { get; set; }
+        public string UserId { get; set; }
         public string Name { get; set; }
         public List<string> Roles { get; set; }
 

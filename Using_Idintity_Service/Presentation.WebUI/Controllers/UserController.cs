@@ -21,9 +21,9 @@ namespace Presentation.WebUI.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(UserDto user)
+        public IActionResult Create(UserDTO user)
         {
-            var result = ApiRequestExtention.RequestPost<UserDto>(HttpContext, "https://localhost:44390/api/v1/User/CreateUser", user);
+            var result = ApiRequestExtention.RequestPost<UserDTO>(HttpContext, "https://localhost:44390/api/v1/User/CreateUser", user);
             if (result is not null && result.IsSuccess)
             {
                 return RedirectToAction("Index");

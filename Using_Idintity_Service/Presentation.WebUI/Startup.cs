@@ -25,8 +25,8 @@ namespace Presentation.WebUI
             services.AddControllersWithViews();
             services.AddApiAuthentication(p =>
             p.MapApiAuthenticationOptions(
-                "https://localhost:44390/",
-                "/account/login")
+                domain: "https://localhost:44390/",
+                loginPath: "/account/login")
             );
         }
 

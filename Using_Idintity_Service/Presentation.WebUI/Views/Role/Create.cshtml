@@ -1,0 +1,31 @@
+﻿@model RoleDTO
+
+<form method="post">
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label asp-for="Id"></label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <input type="text" asp-for="Id" class="form-control" />
+        </div>
+        <div class=" col-md-12 form-group">
+            <span asp-validation-for="Id"></span>
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label asp-for="Name"></label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <input type="text" asp-for="Name" class="form-control" />
+        </div>
+        <div class=" col-md-12 form-group">
+            <span asp-validation-for="Name"></span>
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <input type="submit" value="Create" class="btn btn-success btn-block" />
+        </div>
+    </div>
+</form>

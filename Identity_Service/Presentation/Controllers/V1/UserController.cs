@@ -33,7 +33,7 @@ namespace Presentation.Controllers.V1
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateUser(UserDto model)
+        public async Task<IActionResult> CreateUser(UserDTO model)
         {
             var user = new ApplicationUser()
             {
@@ -44,7 +44,7 @@ namespace Presentation.Controllers.V1
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return Ok(value: new UserDto { Id = user.Id, UserName = user.UserName, Email = user.Email, PhoneNumber = user.PhoneNumber, Password = "****" }); ;
+                return Ok(value: new UserDTO { Id = user.Id, UserName = user.UserName, Email = user.Email, PhoneNumber = user.PhoneNumber, Password = "****" });
             }
             return BadRequest();
 

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
+using Presentation.Models.Role;
 using System.Linq;
+using System.Threading.Tasks;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -30,5 +32,24 @@ namespace Presentation.Controllers.V1
             var result = roleManager.Roles.Select(p => new SelectListDTO { Id = p.Id, Name = p.Name }).AsEnumerable();
             return Ok(result);
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateRole(RoleDTO model)
+        {
+            var role = new IdentityRole()
+            {
+                Id = model.Id,
+                Name = model.Name
+            };
+            var result = await roleManager.CreateAsync(role);
+            if (result.Succeeded)
+            {
+                return Ok(value: new RoleDTO { Id = role.Id, Name = role.Name });
+            }
+            return BadRequest();
+
+        }
+
     }
 }

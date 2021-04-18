@@ -7,7 +7,8 @@ namespace Presentation.WebUI.Infrastructure
 {
     public static class ApiRequestExtention
     {
-        public static ApiResult<T> RequestPost<T>(HttpContext context, string url, T model)
+        const string identityDomain = "https://localhost:44390/";
+        public static ApiResult<T> RequestPost<T>(HttpContext context, string url, object model)
         {
             try
             {
@@ -15,7 +16,7 @@ namespace Presentation.WebUI.Infrastructure
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {context.Session.GetString("token")}");
-                var response = client.PostAsync(url, data).Result;
+                var response = client.PostAsync($"{identityDomain}{url}", data).Result;
                 string result = response.Content.ReadAsStringAsync().Result;
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(result);
             }
@@ -30,7 +31,7 @@ namespace Presentation.WebUI.Infrastructure
             {
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {context.Session.GetString("token")}");
-                var result = client.GetAsync(url).Result;
+                var result = client.GetAsync($"{identityDomain}{url}").Result;
                 string json = result.Content.ReadAsStringAsync().Result;
                 var model = Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
                 return model;

@@ -8,10 +8,10 @@ namespace Presentation.WebUI.Controllers
 {
     public class RoleController : Controller
     {
-        [ApiAuthorize]
+        [ApiAuthorize(Role = "admin")]
         public IActionResult Index()
         {
-            var result = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "https://localhost:44390/api/v1/Role/GetRoles").Data;
+            var result = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "api/v1/Role/GetRoles").Data;
             return View(result);
         }
 
@@ -22,7 +22,7 @@ namespace Presentation.WebUI.Controllers
         [HttpPost]
         public IActionResult Create(RoleDTO role)
         {
-            var result = ApiRequestExtention.RequestPost<RoleDTO>(HttpContext, "https://localhost:44390/api/v1/Role/CreateRole", role);
+            var result = ApiRequestExtention.RequestPost<RoleDTO>(HttpContext, "api/v1/Role/CreateRole", role);
             if (result is not null && result.IsSuccess)
             {
                 return RedirectToAction("Index");

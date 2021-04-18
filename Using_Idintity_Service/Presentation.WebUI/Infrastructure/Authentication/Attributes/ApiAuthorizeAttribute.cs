@@ -13,14 +13,18 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Attributes
 
     public class ApiAuthorizeAttribute : ActionFilterAttribute
     {
+        public string Role { get; set; }
+
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var options = context.HttpContext.RequestServices.GetRequiredService<ApiAuthenticationOptions>();
             var authenticatedUser = context.HttpContext.RequestServices.GetRequiredService<AuthenticatedUser>();
+
             if (!authenticatedUser.IsAuthenticated)
-            {
                 context.Result = new RedirectResult(options.LoginPath);
-            }
+
+            if (Role is not null && !authenticatedUser.IsInRole(Role))
+                context.Result = new RedirectResult(options.LoginPath);
 
             base.OnActionExecuting(context);
         }

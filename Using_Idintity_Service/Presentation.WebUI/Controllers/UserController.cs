@@ -11,7 +11,7 @@ namespace Presentation.WebUI.Controllers
         [ApiAuthorize]
         public IActionResult Index()
         {
-            var result = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "https://localhost:44390/api/v1/User/GetUsers").Data;
+            var result = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "api/v1/User/GetUsers").Data;
 
             return View(result);
         }
@@ -23,7 +23,7 @@ namespace Presentation.WebUI.Controllers
         [HttpPost]
         public IActionResult Create(UserDTO user)
         {
-            var result = ApiRequestExtention.RequestPost<UserDTO>(HttpContext, "https://localhost:44390/api/v1/User/CreateUser", user);
+            var result = ApiRequestExtention.RequestPost<UserDTO>(HttpContext, "api/v1/User/CreateUser", user);
             if (result is not null && result.IsSuccess)
             {
                 return RedirectToAction("Index");

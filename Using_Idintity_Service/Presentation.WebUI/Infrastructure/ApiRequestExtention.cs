@@ -19,12 +19,21 @@ namespace Presentation.WebUI.Infrastructure
         }
         public static ApiResult<T> RequestGet<T>(HttpContext context, string url)
         {
-            using var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {context.Session.GetString("token")}");
-            var result = client.GetAsync(url).Result;
-            string json = result.Content.ReadAsStringAsync().Result;
-            var model = Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
-            return model;
+            try
+            {
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {context.Session.GetString("token")}");
+                var result = client.GetAsync(url).Result;
+                string json = result.Content.ReadAsStringAsync().Result;
+                var model = Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
+                return model;
+
+            }
+            catch (System.Exception)
+            {
+                context.Response.Redirect("/");
+                return null;
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Presentation.WebUI.Infrastructure.Authentication;
 using Presentation.WebUI.Infrastructure.Authentication.Middlewares;
 using Presentation.WebUI.Infrastructure.Authentication.Services;
 
@@ -21,7 +22,7 @@ namespace Presentation.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddApiAuthentication();
+            services.AddApiAuthentication(p => p.Domain = "https://localhost:44390/");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

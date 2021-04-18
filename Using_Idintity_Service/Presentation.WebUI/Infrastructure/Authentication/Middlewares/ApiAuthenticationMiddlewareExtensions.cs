@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using System;
 
 namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
 {
@@ -11,5 +12,4 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
             return builder.UseMiddleware<ApiAuthentication>();
         }
     }
-
 }

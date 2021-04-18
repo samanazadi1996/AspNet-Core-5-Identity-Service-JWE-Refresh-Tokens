@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Presentation.WebUI.Infrastructure.Authentication.DTO;
 using System;
 using System.Net.Http;
@@ -10,18 +11,21 @@ using System.Threading.Tasks;
 namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
 {
 
-    public class ApiAuthentication
+    public class ApiAuthentication : IMiddleware
     {
-        private readonly RequestDelegate _next;
+        private readonly ApiAuthenticationOptions options;
+        private readonly AuthenticatedUser authenticatedUser;
 
-        [Obsolete]
-        public ApiAuthentication(RequestDelegate next)
+        public ApiAuthentication(
+            ApiAuthenticationOptions options,
+            AuthenticatedUser authenticatedUser
+            )
         {
-            _next = next;
+            this.options = options;
+            this.authenticatedUser = authenticatedUser;
         }
 
-        [Obsolete]
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
             var token = context.Session.GetString("token");
             if (token is not null)
@@ -30,7 +34,7 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
                 if (!ppp)
                 {
                     var refreshtoken = context.Session.GetString("refreshtoken");
-                    var Getrefreshtoken = await Request<TokensDTO>("https://localhost:44390/api/v1/Authentication/RefreshToken", "refreshtoken", refreshtoken);
+                    var Getrefreshtoken = await Request<TokensDTO>($"{options.Domain}api/v1/Authentication/RefreshToken", "refreshtoken", refreshtoken);
                     if (Getrefreshtoken is not null)
                     {
                         context.Session.SetString("refreshtoken", Getrefreshtoken.Data.refreshToken);
@@ -39,16 +43,15 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
                     }
                 }
             }
-            await _next.Invoke(context);
+            await next.Invoke(context);
         }
 
         private async Task<bool> Authenticate(HttpContext context, string token)
         {
-            var result = await Request<AuthenticatedUser>("https://localhost:44390/api/v1/Authentication/Authenticate", "token", token);
+            var result = await Request<AuthenticatedUser>($"{options.Domain}api/v1/Authentication/Authenticate", "token", token);
 
             if (result is not null)
             {
-                var authenticatedUser = context.RequestServices.GetRequiredService<AuthenticatedUser>();
                 authenticatedUser.IsAuthenticated = true;
                 authenticatedUser.Name = result.Data.Name;
                 authenticatedUser.Roles = result.Data.Roles;

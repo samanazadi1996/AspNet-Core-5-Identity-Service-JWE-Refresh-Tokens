@@ -1,14 +1,17 @@
 ﻿@model IEnumerable<SelectListDTO>
-<table class="table table-bordered table-striped table-info">
-    <tr>
-        <th>شناسه</th>
-        <th>نام</th>
-    </tr>
-    @foreach (var item in Model)
-    {
+    <div class="col-md-12 form-group">
+        <a asp-action="Create" class="btn btn-success">Create</a>
+    </div>
+    <table class="table table-bordered table-striped table-info">
         <tr>
-            <td>@item.Id</td>
-            <td>@item.Name</td>
+            <th>شناسه</th>
+            <th>نام</th>
         </tr>
-    }
-</table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+            </tr>
+        }
+    </table>

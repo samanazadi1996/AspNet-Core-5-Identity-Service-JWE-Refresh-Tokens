@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
+using Presentation.Models.Account;
 using System.Linq;
+using System.Threading.Tasks;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -27,6 +29,25 @@ namespace Presentation.Controllers.V1
         {
             var result = userManager.Users.Select(p => new SelectListDTO { Id = p.Id, Name = p.UserName }).AsEnumerable();
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateUser(UserDto model)
+        {
+            var user = new ApplicationUser()
+            {
+                UserName = model.UserName,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber
+            };
+            var result = await userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                return Ok(value: new UserDto { Id = user.Id, UserName = user.UserName, Email = user.Email, PhoneNumber = user.PhoneNumber, Password = "****" }); ;
+            }
+            return BadRequest();
+
         }
     }
 }

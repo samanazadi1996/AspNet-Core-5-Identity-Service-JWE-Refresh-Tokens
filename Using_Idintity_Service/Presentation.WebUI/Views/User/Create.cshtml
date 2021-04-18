@@ -1,0 +1,53 @@
+﻿@model UserDto
+
+<form method="post">
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label asp-for="UserName"></label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <input type="text" asp-for="UserName" class="form-control" />
+        </div>
+        <div class=" col-md-12 form-group">
+            <span asp-validation-for="UserName"></span>
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label asp-for="Email"></label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <input type="text" asp-for="Email" class="form-control" />
+        </div>
+        <div class=" col-md-12 form-group">
+            <span asp-validation-for="Email"></span>
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label asp-for="PhoneNumber"></label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <input type="text" asp-for="PhoneNumber" class="form-control" />
+        </div>
+        <div class=" col-md-12 form-group">
+            <span asp-validation-for="PhoneNumber"></span>
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label asp-for="Password"></label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <input type="text" asp-for="Password" class="form-control" />
+        </div>
+        <div class=" col-md-12 form-group">
+            <span asp-validation-for="Password"></span>
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <input type="submit" value="Create" class="btn btn-success btn-block" />
+        </div>
+    </div>
+</form>

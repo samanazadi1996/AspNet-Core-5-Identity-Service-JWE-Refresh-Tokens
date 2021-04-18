@@ -26,7 +26,8 @@ namespace Presentation.WebUI
             services.AddApiAuthentication(p =>
             p.MapApiAuthenticationOptions(
                 "https://localhost:44390/",
-                "/account/login")            );
+                "/account/login")
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

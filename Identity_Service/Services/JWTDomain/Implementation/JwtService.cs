@@ -17,11 +17,13 @@ namespace Services.JWTDomain.Implementation
     {
         private readonly SiteSettings _SiteSetting;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public JwtService(IOptionsSnapshot<SiteSettings> Setting, SignInManager<ApplicationUser> signInManager)
+        public JwtService(IOptionsSnapshot<SiteSettings> Setting, SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
         {
             _SiteSetting = Setting.Value;
             _signInManager = signInManager;
+            this.userManager = userManager;
         }
 
         public async Task<string> GenerateAsync(ApplicationUser user)
@@ -63,8 +65,17 @@ namespace Services.JWTDomain.Implementation
         }
         private async Task<IEnumerable<Claim>> _getClaimsAsync(ApplicationUser user)
         {
-            var result = await _signInManager.ClaimsFactory.CreateAsync(user);
-            return result.Claims;
+            var securityStampClaimType = new ClaimsIdentityOptions().SecurityStampClaimType;
+
+            List<Claim> claims = new();
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            claims.Add(new Claim(securityStampClaimType, user.SecurityStamp));
+
+            foreach (var item in (await userManager.GetRolesAsync(user)))
+                claims.Add(new Claim(ClaimTypes.Role, item));
+
+            return claims;
         }
     }
 }

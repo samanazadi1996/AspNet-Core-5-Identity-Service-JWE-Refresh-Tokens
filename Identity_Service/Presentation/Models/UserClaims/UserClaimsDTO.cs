@@ -12,10 +12,4 @@ namespace Presentation.Models.UserClaims
 
         public List<ClaimDTO> claims { get; set; }
     }
-
-    public class ClaimDTO
-    {
-        public string type { get; set; }
-        public string value { get; set; }
-    }
 }

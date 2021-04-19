@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.Models;
-using Presentation.Models.Account;
+using Presentation.Models.Common;
+using Presentation.Models.User;
 using System.Linq;
 using System.Threading.Tasks;
 using WebFramework.Filters;

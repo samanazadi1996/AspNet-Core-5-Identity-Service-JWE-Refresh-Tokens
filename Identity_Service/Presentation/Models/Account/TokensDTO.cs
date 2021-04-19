@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Presentation.Models
+namespace Presentation.Models.Account
 {
     public class TokensDTO
     {

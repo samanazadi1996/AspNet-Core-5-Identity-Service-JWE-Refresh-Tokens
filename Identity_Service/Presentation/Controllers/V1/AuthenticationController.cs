@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Infrastracture;
-using Presentation.Models;
+using Presentation.Models.Account;
 using Services.JWTDomain.Abstraction;
 using Services.RefreshTokenDomain.Abstraction;
 using System;

@@ -30,7 +30,10 @@
                             <a class="nav-link text-dark" asp-controller="Role" asp-action="Index">نقش ها</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-controller="UserClaims" asp-action="Index">دسترسی ها</a>
+                            @{
+                                var parms = new Dictionary<string, string> { { "username", authenticatedUser.Name } };
+                                <a class="nav-link text-dark" asp-controller="UserClaims" asp-all-route-data="parms" asp-action="Index">دسترسی ها</a>
+                            }
                         </li>
                     </ul>
                 </div>

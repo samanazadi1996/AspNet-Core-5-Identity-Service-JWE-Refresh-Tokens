@@ -1,4 +1,4 @@
-﻿namespace Presentation.Models.Account
+﻿namespace Presentation.Models.User
 {
     public class UserDTO
     {

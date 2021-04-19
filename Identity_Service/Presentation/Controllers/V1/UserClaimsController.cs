@@ -48,5 +48,20 @@ namespace Presentation.Controllers.V1
 
             return BadRequest();
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateUserClaim(UserClaimDTO model)
+        {
+            var user = await userManager.FindByNameAsync(model.userName);
+            var result = await userManager.AddClaimAsync(user, new Claim(model.claim.type, model.claim.value));
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
     }
 }

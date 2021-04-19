@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Presentation.Models
+namespace Presentation.Models.Account
 {
     public class ResponseAuthorizeDTO
     {

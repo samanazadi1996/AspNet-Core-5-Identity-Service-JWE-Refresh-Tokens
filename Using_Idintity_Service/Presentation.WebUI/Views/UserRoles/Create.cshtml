@@ -1,0 +1,26 @@
+﻿@model CreateUserRoleDTO
+<form method="post">
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label asp-for="UserName"></label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <input type="text" asp-for="UserName" class="form-control" readonly disabled />
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <label>Claim</label>
+        </div>
+        <div class=" col-md-12 form-group">
+            <select asp-for="RoleName" asp-items="@(new SelectList(ViewBag.roles, "Name", "Name"))" class="form-control">
+                <option value="">-- انتخاب کنید --</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4 form-group">
+        <div class=" col-md-12 form-group">
+            <input type="submit" value="Create" class="btn btn-success btn-block" />
+        </div>
+    </div>
+</form>

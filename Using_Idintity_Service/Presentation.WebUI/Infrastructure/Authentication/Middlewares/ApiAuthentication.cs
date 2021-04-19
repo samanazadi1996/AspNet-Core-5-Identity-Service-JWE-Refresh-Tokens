@@ -50,7 +50,7 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
         {
             var result = await Request<AuthenticatedUser>($"{options.Domain}api/v1/Authentication/Authenticate", "token", token);
 
-            if (result is not null)
+            if (result.Data is not null)
             {
                 authenticatedUser.IsAuthenticated = true;
                 authenticatedUser.Name = result.Data.Name;

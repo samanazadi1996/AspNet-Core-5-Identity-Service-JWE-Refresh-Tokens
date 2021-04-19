@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
 using Presentation.Models.Account;
 using Presentation.Models.UserClaims;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebFramework.Api;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -27,7 +29,7 @@ namespace Presentation.Controllers.V1
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetRoleClaims(string roleName)
+        public async Task<ApiResult<IEnumerable<string>>> GetRoleClaims(string roleName)
         {
             var role = await roleManager.FindByNameAsync(roleName);
             var result = await roleManager.GetClaimsAsync(role);
@@ -36,7 +38,7 @@ namespace Presentation.Controllers.V1
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateRoleClaim(RoleClaimDTO model)
+        public async Task<ApiResult> CreateRoleClaim(RoleClaimDTO model)
         {
             var user = await roleManager.FindByNameAsync(model.RoleName);
             var result = await roleManager.AddClaimAsync(user, new Claim(model.Claim.type, model.Claim.value));

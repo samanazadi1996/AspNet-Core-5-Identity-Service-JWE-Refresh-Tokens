@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Models;
 using Presentation.Models.Account;
 using Presentation.Models.UserClaims;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebFramework.Api;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -27,7 +29,7 @@ namespace Presentation.Controllers.V1
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetUserClaims(string userName)
+        public async Task<ApiResult<IEnumerable<string>>> GetUserClaims(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
             var result = await userManager.GetClaimsAsync(user);
@@ -36,7 +38,7 @@ namespace Presentation.Controllers.V1
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateUserClaims(UserClaimsDTO model)
+        public async Task<ApiResult> CreateUserClaims(UserClaimsDTO model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
             var result = await userManager.AddClaimsAsync(user, model.Claims.Select(p => new Claim(p.type, p.value)));
@@ -51,7 +53,7 @@ namespace Presentation.Controllers.V1
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateUserClaim(UserClaimDTO model)
+        public async Task<ApiResult> CreateUserClaim(UserClaimDTO model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
             var result = await userManager.AddClaimAsync(user, new Claim(model.Claim.type, model.Claim.value));

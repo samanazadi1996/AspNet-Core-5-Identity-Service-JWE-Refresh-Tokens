@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models.Common;
 using Presentation.Models.Role;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebFramework.Api;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -25,7 +27,7 @@ namespace Presentation.Controllers.V1
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetRoles()
+        public ApiResult<IEnumerable<SelectListDTO>> GetRoles()
         {
             var result = roleManager.Roles.Select(p => new SelectListDTO { Id = p.Id, Name = p.Name }).AsEnumerable();
             return Ok(result);
@@ -33,7 +35,7 @@ namespace Presentation.Controllers.V1
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateRole(RoleDTO model)
+        public async Task<ApiResult<RoleDTO>> CreateRole(RoleDTO model)
         {
             var role = new IdentityRole()
             {

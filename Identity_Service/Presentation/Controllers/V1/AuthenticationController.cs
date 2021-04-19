@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using WebFramework.Api;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -38,12 +39,12 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpGet]
-        public IActionResult Authenticate(string token)
+        public ApiResult<ResponseAuthorizeDTO> Authenticate(string token)
         {
             var result = getClaimsByTokenService.Get(token);
             if (result is null)
             {
-                return Unauthorized();
+                return BadRequest();
             }
 
             var response = new ResponseAuthorizeDTO()
@@ -57,14 +58,14 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpGet]
-        public async Task<IActionResult> RefreshToken(Guid refreshToken)
+        public async Task<ApiResult<TokensDTO>> RefreshToken(Guid refreshToken)
         {
             var myIp = GetCurrentIpAddressExtention.Get(HttpContext);
 
             var refreshTokenModel = await getRefreshTokenService.GetByRefreshToken(refreshToken);
             if (refreshTokenModel is null || refreshTokenModel.IsExpired)
             {
-                return Unauthorized();
+                return BadRequest();
             }
             var newRefreshToken = await updateResreshTokenService.Update(refreshToken, myIp);
             var user = await userManager.FindByIdAsync(refreshTokenModel?.UserId);

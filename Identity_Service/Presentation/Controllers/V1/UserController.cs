@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models.Common;
 using Presentation.Models.User;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebFramework.Api;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -25,7 +27,7 @@ namespace Presentation.Controllers.V1
 
         [HttpGet]
         [Authorize]
-        public IActionResult GetUsers()
+        public ApiResult<IEnumerable<SelectListDTO>> GetUsers()
         {
             var result = userManager.Users.Select(p => new SelectListDTO { Id = p.Id, Name = p.UserName }).AsEnumerable();
             return Ok(result);
@@ -33,7 +35,7 @@ namespace Presentation.Controllers.V1
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> CreateUser(UserDTO model)
+        public async Task<ApiResult<UserDTO>> CreateUser(UserDTO model)
         {
             var user = new ApplicationUser()
             {

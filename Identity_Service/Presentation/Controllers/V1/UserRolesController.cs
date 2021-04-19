@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Models.Role;
 using Presentation.Models.UserRoles;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebFramework.Api;
 using WebFramework.Filters;
 
 namespace Presentation.Controllers.V1
@@ -26,7 +28,7 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetRolesByUserName(string userName)
+        public async Task<ApiResult<IEnumerable<string>>> GetRolesByUserName(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
             var roles = await userManager.GetRolesAsync(user);
@@ -34,7 +36,7 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddRoleToUser(CreateUserRoleDTO model)
+        public async Task<ApiResult> AddRoleToUser(CreateUserRoleDTO model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
             var result = await userManager.AddToRoleAsync(user, model.RoleName);

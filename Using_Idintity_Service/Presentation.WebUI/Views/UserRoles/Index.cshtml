@@ -1,0 +1,15 @@
+﻿@model List<string>
+<div class="col-md-12 form-group">
+    <a href="/RoleClaims/Create?RoleName=@ViewBag.roleName" class="btn btn-success">add role to user</a>
+</div>
+<table class="table table-bordered table-striped table-info">
+    <tr>
+        <th>نام</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item</td>
+        </tr>
+    }
+</table>

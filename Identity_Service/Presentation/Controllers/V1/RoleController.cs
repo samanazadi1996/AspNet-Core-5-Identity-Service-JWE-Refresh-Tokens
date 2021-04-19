@@ -16,12 +16,10 @@ namespace Presentation.Controllers.V1
     [Route("api/v1/[controller]/[action]")]
     public class RoleController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public RoleController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public RoleController(RoleManager<IdentityRole> roleManager)
         {
-            this.userManager = userManager;
             this.roleManager = roleManager;
         }
 

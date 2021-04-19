@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Presentation.WebUI.Infrastructure.Authentication.DTO;
+using System;
 using System.Net.Http;
 using System.Text;
 
@@ -15,9 +16,12 @@ namespace Presentation.WebUI.Infrastructure
                 var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 using var client = new HttpClient();
+                client.Timeout = TimeSpan.FromMilliseconds(500);
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {context.Session.GetString("token")}");
                 var response = client.PostAsync($"{identityDomain}{url}", data).Result;
                 string result = response.Content.ReadAsStringAsync().Result;
+                client.Dispose();
+
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(result);
             }
             catch (System.Exception)
@@ -31,10 +35,12 @@ namespace Presentation.WebUI.Infrastructure
             {
                 using var client = new HttpClient();
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {context.Session.GetString("token")}");
+                client.Timeout = TimeSpan.FromMilliseconds(500);
                 var result = client.GetAsync($"{identityDomain}{url}").Result;
                 string json = result.Content.ReadAsStringAsync().Result;
-                var model = Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
-                return model;
+                client.Dispose();
+
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
 
             }
             catch (System.Exception)

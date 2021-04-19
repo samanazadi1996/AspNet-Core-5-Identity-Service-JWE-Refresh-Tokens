@@ -68,6 +68,8 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
             {
                 using (var client = new HttpClient())
                 {
+                    client.Timeout = TimeSpan.FromMilliseconds(500);
+
                     var result = await client.GetAsync($"{url}?{dataType}={data}");
                     string resultContent = await result.Content.ReadAsStringAsync();
 

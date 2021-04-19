@@ -50,5 +50,21 @@ namespace Presentation.Controllers.V1
 
             return BadRequest();
         }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<ApiResult> RemoveClaim(string roleName, string claimValue)
+        {
+            var role = await roleManager.FindByNameAsync(roleName);
+            var claim = (await roleManager.GetClaimsAsync(role)).FirstOrDefault(c => c.Value.Equals(claimValue));
+            var result = await roleManager.RemoveClaimAsync(role, claim);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
     }
 }

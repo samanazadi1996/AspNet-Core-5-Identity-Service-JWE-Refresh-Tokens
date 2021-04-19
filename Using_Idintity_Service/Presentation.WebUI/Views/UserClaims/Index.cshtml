@@ -5,11 +5,15 @@
 <table class="table table-bordered table-striped table-info">
     <tr>
         <th>مقدار</th>
+        <th></th>
     </tr>
     @foreach (var item in Model)
     {
         <tr>
             <td>@item</td>
+            <td>
+                <a href="/UserClaims/RemoveClaim?userName=@(ViewBag.userName)&claimValue=@item" class="btn btn-danger">delete</a>
+            </td>
         </tr>
     }
 </table>

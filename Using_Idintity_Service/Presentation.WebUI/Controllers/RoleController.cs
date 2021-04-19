@@ -29,6 +29,14 @@ namespace Presentation.WebUI.Controllers
             }
             return View(role);
         }
+
+        [HttpGet]
+        public IActionResult RemoveRole(string roleName)
+        {
+            ApiRequestExtention.RequestDelete<string>(HttpContext, $"api/v1/Role/RemoveRole?roleName={roleName}");
+            return RedirectToAction("Index");
+        }
+
     }
 }
 

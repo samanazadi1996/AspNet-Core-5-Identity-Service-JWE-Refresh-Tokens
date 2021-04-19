@@ -48,5 +48,24 @@ namespace Presentation.WebUI.Infrastructure
                 return null;
             }
         }
+        public static ApiResult<T> RequestDelete<T>(HttpContext context, string url)
+        {
+            try
+            {
+                using var client = new HttpClient();
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {context.Session.GetString("token")}");
+                client.Timeout = TimeSpan.FromMilliseconds(500);
+                var result = client.DeleteAsync($"{identityDomain}{url}").Result;
+                string json = result.Content.ReadAsStringAsync().Result;
+                client.Dispose();
+
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
+
+            }
+            catch (System.Exception)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Models.UserRoles
 {
-    public class CreateUserRoleDTO
+    public class UserRoleDTO
     {
         public string UserName { get; set; }
         public string RoleName { get; set; }

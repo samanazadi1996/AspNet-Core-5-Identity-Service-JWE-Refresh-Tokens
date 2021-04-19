@@ -65,5 +65,21 @@ namespace Presentation.Controllers.V1
 
             return BadRequest();
         }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<ApiResult> RemoveClaim(string userName, string claimValue)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            var claim = (await userManager.GetClaimsAsync(user)).FirstOrDefault(c => c.Value.Equals(claimValue));
+            var result = await userManager.RemoveClaimAsync(user, claim);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
+        }
+
     }
 }

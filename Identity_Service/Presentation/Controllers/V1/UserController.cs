@@ -51,5 +51,19 @@ namespace Presentation.Controllers.V1
             return BadRequest();
 
         }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<ApiResult> RemoveUser(string userName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            var result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+
     }
 }

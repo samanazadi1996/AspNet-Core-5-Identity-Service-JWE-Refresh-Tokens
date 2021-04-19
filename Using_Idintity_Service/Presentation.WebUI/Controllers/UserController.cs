@@ -30,6 +30,14 @@ namespace Presentation.WebUI.Controllers
             }
             return View(user);
         }
+
+        [HttpGet]
+        public IActionResult RemoveUser(string userName)
+        {
+            ApiRequestExtention.RequestDelete<string>(HttpContext, $"api/v1/User/RemoveUser?userName={userName}");
+            return RedirectToAction("Index");
+        }
+
     }
 }
 

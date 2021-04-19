@@ -38,6 +38,12 @@ namespace Presentation.WebUI.Controllers
             }
             return View(model);
         }
+        public IActionResult RemoveClaim(string userName, string claimValue)
+        {
+            ApiRequestExtention.RequestDelete<string>(HttpContext, $"api/v1/UserClaims/RemoveClaim?username={userName}&claimValue={claimValue}");
+            return RedirectToAction("Index", new { userName = userName });
+        }
+
     }
 }
 

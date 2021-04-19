@@ -36,7 +36,7 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpPost]
-        public async Task<ApiResult> AddRoleToUser(CreateUserRoleDTO model)
+        public async Task<ApiResult> AddRoleToUser(UserRoleDTO model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
             var result = await userManager.AddToRoleAsync(user, model.RoleName);
@@ -45,6 +45,20 @@ namespace Presentation.Controllers.V1
             {
                 return Ok();
             }
+            return BadRequest();
+        }
+
+        [HttpDelete]
+        [Authorize]
+        public async Task<ApiResult> RemoveUserRole(string userName, string roleName)
+        {
+            var user = await userManager.FindByNameAsync(userName);
+            var result = await userManager.RemoveFromRoleAsync(user, roleName);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+
             return BadRequest();
         }
 

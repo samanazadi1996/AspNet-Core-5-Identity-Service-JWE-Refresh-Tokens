@@ -35,7 +35,7 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
                 {
                     var refreshtoken = context.Session.GetString("refreshtoken");
                     var Getrefreshtoken = await Request<TokensDTO>($"{options.Domain}api/v1/Authentication/RefreshToken", "refreshtoken", refreshtoken);
-                    if (Getrefreshtoken is not null)
+                    if (Getrefreshtoken.IsSuccess)
                     {
                         context.Session.SetString("refreshtoken", Getrefreshtoken.Data.refreshToken);
                         context.Session.SetString("token", Getrefreshtoken.Data.token);
@@ -50,7 +50,7 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
         {
             var result = await Request<AuthenticatedUser>($"{options.Domain}api/v1/Authentication/Authenticate", "token", token);
 
-            if (result.Data is not null)
+            if (result.IsSuccess)
             {
                 authenticatedUser.IsAuthenticated = true;
                 authenticatedUser.Name = result.Data.Name;

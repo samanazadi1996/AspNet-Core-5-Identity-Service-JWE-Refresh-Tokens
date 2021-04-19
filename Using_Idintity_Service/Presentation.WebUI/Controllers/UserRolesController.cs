@@ -28,10 +28,10 @@ namespace Presentation.WebUI.Controllers
         public IActionResult Create(string userName)
         {
             ViewBag.roles = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "api/v1/Role/GetRoles").Data;
-            return View(new CreateUserRoleDTO { UserName = userName });
+            return View(new UserRoleDTO { UserName = userName });
         }
         [HttpPost]
-        public IActionResult Create(CreateUserRoleDTO model)
+        public IActionResult Create(UserRoleDTO model)
         {
             var result = ApiRequestExtention.RequestPost<string>(HttpContext, "api/v1/UserRoles/AddRoleToUser", model);
             if (result is not null && result.IsSuccess)
@@ -42,6 +42,14 @@ namespace Presentation.WebUI.Controllers
             ViewBag.roles = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "api/v1/Role/GetRoles").Data;
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult RemoveUserRole(string userName, string roleName)
+        {
+            ApiRequestExtention.RequestDelete<string>(HttpContext, $"api/v1/UserRoles/RemoveUserRole?username={userName}&roleName={roleName}");
+            return RedirectToAction("Index", new { userName = userName });
+        }
+
     }
 }
 

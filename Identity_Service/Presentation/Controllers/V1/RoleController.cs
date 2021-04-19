@@ -51,5 +51,17 @@ namespace Presentation.Controllers.V1
 
         }
 
+        [HttpDelete]
+        [Authorize]
+        public async Task<ApiResult> RemoveRole(string roleName)
+        {
+            var role = await roleManager.FindByNameAsync(roleName);
+            var result = await roleManager.DeleteAsync(role);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

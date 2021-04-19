@@ -1,6 +1,6 @@
-﻿using Presentation.Models.Common;
+﻿using System.Collections.Generic;
 
-namespace Presentation.Models.UserClaims
+namespace Presentation.WebUI.Models
 {
     public class UserClaimDTO
     {
@@ -8,4 +8,5 @@ namespace Presentation.Models.UserClaims
 
         public ClaimDTO Claim { get; set; }
     }
+
 }

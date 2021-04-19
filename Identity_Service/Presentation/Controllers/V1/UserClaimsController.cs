@@ -38,8 +38,8 @@ namespace Presentation.Controllers.V1
         [Authorize]
         public async Task<IActionResult> CreateUserClaims(UserClaimsDTO model)
         {
-            var user = await userManager.FindByNameAsync(model.userName);
-            var result = await userManager.AddClaimsAsync(user, model.claims.Select(p => new Claim(p.type, p.value)));
+            var user = await userManager.FindByNameAsync(model.UserName);
+            var result = await userManager.AddClaimsAsync(user, model.Claims.Select(p => new Claim(p.type, p.value)));
 
             if (result.Succeeded)
             {
@@ -53,8 +53,8 @@ namespace Presentation.Controllers.V1
         [Authorize]
         public async Task<IActionResult> CreateUserClaim(UserClaimDTO model)
         {
-            var user = await userManager.FindByNameAsync(model.userName);
-            var result = await userManager.AddClaimAsync(user, new Claim(model.claim.type, model.claim.value));
+            var user = await userManager.FindByNameAsync(model.UserName);
+            var result = await userManager.AddClaimAsync(user, new Claim(model.Claim.type, model.Claim.value));
 
             if (result.Succeeded)
             {

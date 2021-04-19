@@ -2,9 +2,9 @@
 
 namespace Presentation.Models.UserClaims
 {
-    public class UserClaimDTO
+    public class RoleClaimDTO
     {
-        public string UserName { get; set; }
+        public string RoleName { get; set; }
 
         public ClaimDTO Claim { get; set; }
     }

@@ -19,21 +19,22 @@ namespace Presentation.WebUI.Controllers
         public IActionResult Index(string userName)
         {
             var result = ApiRequestExtention.RequestGet<List<string>>(HttpContext, $"api/v1/UserClaims/GetUserClaims?userName={userName}").Data;
-
+            ViewBag.userName = userName;
             return View(result);
         }
 
         public IActionResult Create(string userName)
         {
-            return View(new UserClaimsDTO() { userName = userName });
+            return View(new UserClaimDTO() { UserName = userName });
         }
         [HttpPost]
-        public IActionResult Create(UserClaimsDTO model)
+        public IActionResult Create(UserClaimDTO model)
         {
-            var result = ApiRequestExtention.RequestPost<string>(HttpContext, "api/v1/UserClaims/CreateUserClaims", model);
+
+            var result = ApiRequestExtention.RequestPost<string>(HttpContext, "api/v1/UserClaims/CreateUserClaim", model);
             if (result is not null && result.IsSuccess)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { userName = model.UserName });
             }
             return View(model);
         }

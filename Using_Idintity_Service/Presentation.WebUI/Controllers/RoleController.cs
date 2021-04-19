@@ -8,7 +8,7 @@ namespace Presentation.WebUI.Controllers
 {
     public class RoleController : Controller
     {
-        [ApiAuthorize(Role = "admin")]
+        [ApiAuthorize("poi")]
         public IActionResult Index()
         {
             var result = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "api/v1/Role/GetRoles").Data;

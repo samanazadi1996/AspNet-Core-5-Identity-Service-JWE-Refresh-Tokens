@@ -25,17 +25,19 @@ namespace Presentation.Controllers.V1
         private readonly IGetClaimsByTokenService getClaimsByTokenService;
         private readonly IGetRefreshTokenService getRefreshTokenService;
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
         private readonly IJwtService jwtService;
         private readonly IUpdateResreshTokenService updateResreshTokenService;
 
 
-        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService, IUpdateResreshTokenService updateResreshTokenService)
+        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService, IUpdateResreshTokenService updateResreshTokenService, RoleManager<IdentityRole> roleManager)
         {
             this.getClaimsByTokenService = getClaimsByTokenService;
             this.getRefreshTokenService = getRefreshTokenService;
             this.userManager = userManager;
             this.jwtService = jwtService;
             this.updateResreshTokenService = updateResreshTokenService;
+            this.roleManager = roleManager;
         }
 
         [HttpGet]
@@ -73,5 +75,28 @@ namespace Presentation.Controllers.V1
 
             return Ok(new TokensDTO() { token = newJWT, refreshToken = newRefreshToken });
         }
+
+        [HttpGet]
+        public async Task<ApiResult<IEnumerable<string>>> GetAllPermission(string userName)
+        {
+            List<string> Permissions = new();
+
+            var user = await userManager.FindByNameAsync(userName);
+            var rolesName = await userManager.GetRolesAsync(user);
+            var userClaims = await userManager.GetClaimsAsync(user);
+            foreach (var roleName in rolesName)
+            {
+                var role = await roleManager.FindByNameAsync(roleName);
+                var RoleClaims = await roleManager.GetClaimsAsync(role);
+                foreach (var item in RoleClaims)
+                    Permissions.Add(item.Value);
+            }
+
+            foreach (var item in userClaims)
+                Permissions.Add(item.Value);
+
+            return Ok(Permissions);
+        }
+
     }
 }

@@ -24,9 +24,9 @@ namespace Presentation.WebUI.Infrastructure
 
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(result);
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return null;
+                return new ApiResult<T>() { IsSuccess = false, Message = ex.ToString(), StatusCode = -1 };
             }
         }
         public static ApiResult<T> RequestGet<T>(HttpContext context, string url)
@@ -43,9 +43,9 @@ namespace Presentation.WebUI.Infrastructure
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return null;
+                return new ApiResult<T>() { IsSuccess = false, Message = ex.ToString(), StatusCode = -1 };
             }
         }
         public static ApiResult<T> RequestDelete<T>(HttpContext context, string url)
@@ -62,9 +62,9 @@ namespace Presentation.WebUI.Infrastructure
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<ApiResult<T>>(json);
 
             }
-            catch (System.Exception)
+            catch (System.Exception ex)
             {
-                return null;
+                return new ApiResult<T>() { IsSuccess = false, Message = ex.ToString(), StatusCode = -1 };
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Presentation.WebUI.Infrastructure.Authentication.DTO;
 using Presentation.WebUI.Infrastructure.Authentication.Middlewares;
+using Presentation.WebUI.Infrastructure.Authentication.Services.Autorize;
 using System;
 
 namespace Presentation.WebUI.Infrastructure.Authentication.Services
@@ -20,6 +21,7 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Services
 
             services.AddScoped<AuthenticatedUser>();
             services.AddScoped<ApiAuthentication>();
+            services.AddScoped<IAutorizeService, AutorizeService>();
         }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Filters;
+using Presentation.WebUI.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace Presentation.WebUI.Infrastructure.Authentication.Services.Autorize
+namespace Presentation.WebUI.LocalServices.Autorize
 {
     public class AutorizeService : IAutorizeService
     {

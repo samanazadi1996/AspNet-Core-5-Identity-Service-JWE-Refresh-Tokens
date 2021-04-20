@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Identity.Client.DTO;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Presentation.WebUI.Infrastructure.Authentication.DTO;
 
 namespace Presentation.WebUI.Controllers
 {
@@ -24,14 +24,6 @@ namespace Presentation.WebUI.Controllers
         [HttpPost]
         public IActionResult SetDataLogin(TokensDTO logindto)
         {
-            var cookieOptions = new CookieOptions
-            {
-                Secure = true,
-                HttpOnly = true,
-                SameSite = SameSiteMode.None
-            };
-
-            // Add the cookie to the response cookie collection
             HttpContext.Session.SetString("refreshtoken", logindto.refreshToken);
             HttpContext.Session.SetString("token", logindto.token);
             return Redirect("/");

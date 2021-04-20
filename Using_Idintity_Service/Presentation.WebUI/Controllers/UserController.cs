@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Identity.Client.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using Presentation.WebUI.Infrastructure;
-using Presentation.WebUI.Infrastructure.Authentication.Attributes;
 using Presentation.WebUI.Models;
 using System.Collections.Generic;
 

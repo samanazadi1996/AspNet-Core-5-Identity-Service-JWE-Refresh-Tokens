@@ -1,5 +1,5 @@
 ﻿@using Presentation.WebUI
 @using Presentation.WebUI.Models
-@using Presentation.WebUI.Infrastructure.Authentication
+@using Identity.Client
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@inject Presentation.WebUI.Infrastructure.Authentication.AuthenticatedUser authenticatedUser;
+@inject Identity.Client.AuthenticatedUser authenticatedUser;

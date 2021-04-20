@@ -2,13 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Presentation.WebUI.Infrastructure.Authentication.DTO;
+using Identity.Client.DTO;
 using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Presentation.WebUI.Infrastructure.Authentication.Middlewares
+namespace Identity.Client.Middlewares
 {
 
     public class ApiAuthentication : IMiddleware

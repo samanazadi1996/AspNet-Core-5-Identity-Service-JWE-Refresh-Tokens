@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 
-namespace Presentation.WebUI.Infrastructure.Authentication.Services.Autorize
+namespace Presentation.WebUI.LocalServices.Autorize
 {
     public interface IAutorizeService
     {

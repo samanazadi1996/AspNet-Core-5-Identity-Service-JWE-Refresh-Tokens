@@ -1,12 +1,13 @@
+using Identity.Client.DTO;
+using Identity.Client.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Presentation.WebUI.Infrastructure.Authentication;
-using Presentation.WebUI.Infrastructure.Authentication.DTO;
-using Presentation.WebUI.Infrastructure.Authentication.Middlewares;
 using Presentation.WebUI.Infrastructure.Authentication.Services;
+using Presentation.WebUI.LocalServices.Autorize;
+using System;
 
 namespace Presentation.WebUI
 {
@@ -23,9 +24,14 @@ namespace Presentation.WebUI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromDays(1);
+            });
+            services.AddScoped<IAutorizeService, AutorizeService>();
             services.AddApiAuthentication(p =>
             p.MapApiAuthenticationOptions(
-                domain: "https://localhost:44390/",
+                domain: "http://5.253.24.60:5006/",
                 loginPath: "/account/login")
             );
         }
@@ -47,6 +53,7 @@ namespace Presentation.WebUI
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
             app.UseApiAuthentication();
             app.UseAuthorization();
 

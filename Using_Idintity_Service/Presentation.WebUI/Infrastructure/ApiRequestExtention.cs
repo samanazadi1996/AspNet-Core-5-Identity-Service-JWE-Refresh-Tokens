@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Presentation.WebUI.Infrastructure.Authentication.DTO;
+﻿using Identity.Client.DTO;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Net.Http;
 using System.Text;

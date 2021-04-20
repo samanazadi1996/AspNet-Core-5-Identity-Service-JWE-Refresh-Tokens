@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Identity.Client.Attributes;
+using Microsoft.AspNetCore.Mvc;
 using Presentation.WebUI.Infrastructure;
-using Presentation.WebUI.Infrastructure.Authentication.Attributes;
 using Presentation.WebUI.Models;
 using System.Collections.Generic;
 
@@ -8,7 +8,7 @@ namespace Presentation.WebUI.Controllers
 {
     public class RoleController : Controller
     {
-        [ApiAuthorize("poi")]
+        [ApiAuthorize]
         public IActionResult Index()
         {
             var result = ApiRequestExtention.RequestGet<List<SelectListDTO>>(HttpContext, "api/v1/Role/GetRoles").Data;

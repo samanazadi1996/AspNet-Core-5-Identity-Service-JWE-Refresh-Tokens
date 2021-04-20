@@ -1,4 +1,4 @@
-﻿namespace Presentation.WebUI.Infrastructure.Authentication.DTO
+﻿namespace Identity.Client.DTO
 {
     public class TokensDTO
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Presentation.WebUI.Infrastructure.Authentication
+namespace Identity.Client
 {
     public class AuthenticatedUser
     {

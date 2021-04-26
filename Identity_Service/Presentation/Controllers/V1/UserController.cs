@@ -26,15 +26,21 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpGet]
-        [Authorize]
         public ApiResult<IEnumerable<SelectListDTO>> GetUsers()
         {
-            var result = userManager.Users.Select(p => new SelectListDTO { Id = p.Id, Name = p.UserName }).AsEnumerable();
+            var result = userManager.Users.Select(p => new UserDTO
+            {
+                Id = p.Id,
+                UserName = p.UserName,
+                Email = p.Email,
+                PhoneNumber = p.PhoneNumber,
+                FirstName = p.FirstName,
+                LastName = p.LastName
+            }).AsEnumerable();
             return Ok(result);
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ApiResult<UserDTO>> CreateUser(UserDTO model)
         {
             var user = new ApplicationUser()
@@ -53,7 +59,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<ApiResult> RemoveUser(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);

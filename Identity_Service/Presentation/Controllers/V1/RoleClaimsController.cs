@@ -20,15 +20,14 @@ namespace Presentation.Controllers.V1
     [Route("api/v1/[controller]/[action]")]
     public class RoleClaimsController : ControllerBase
     {
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<ApplicationRole> roleManager;
 
-        public RoleClaimsController(RoleManager<IdentityRole> roleManager)
+        public RoleClaimsController(RoleManager<ApplicationRole> roleManager)
         {
             this.roleManager = roleManager;
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ApiResult<IEnumerable<string>>> GetRoleClaims(string roleName)
         {
             var role = await roleManager.FindByNameAsync(roleName);
@@ -37,7 +36,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ApiResult> CreateRoleClaim(RoleClaimDTO model)
         {
             var user = await roleManager.FindByNameAsync(model.RoleName);
@@ -52,7 +50,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<ApiResult> RemoveClaim(string roleName, string claimValue)
         {
             var role = await roleManager.FindByNameAsync(roleName);

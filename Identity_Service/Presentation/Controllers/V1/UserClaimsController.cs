@@ -28,7 +28,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ApiResult<IEnumerable<string>>> GetUserClaims(string userName)
         {
             var user = await userManager.FindByNameAsync(userName);
@@ -37,7 +36,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ApiResult> CreateUserClaims(UserClaimsDTO model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
@@ -52,7 +50,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ApiResult> CreateUserClaim(UserClaimDTO model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
@@ -67,7 +64,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<ApiResult> RemoveClaim(string userName, string claimValue)
         {
             var user = await userManager.FindByNameAsync(userName);

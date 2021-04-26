@@ -16,7 +16,7 @@ namespace Data
 
             options.UseSqlServer(settings.DataBaseConectionString, x => x.MigrationsHistoryTable(HistoryRepository.DefaultTableName, "Identity")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
 
                 //Password Settings

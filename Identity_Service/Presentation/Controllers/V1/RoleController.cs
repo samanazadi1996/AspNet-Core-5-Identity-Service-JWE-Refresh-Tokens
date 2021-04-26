@@ -18,15 +18,14 @@ namespace Presentation.Controllers.V1
     [Route("api/v1/[controller]/[action]")]
     public class RoleController : ControllerBase
     {
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<ApplicationRole> roleManager;
 
-        public RoleController(RoleManager<IdentityRole> roleManager)
+        public RoleController(RoleManager<ApplicationRole> roleManager)
         {
             this.roleManager = roleManager;
         }
 
         [HttpGet]
-        [Authorize]
         public ApiResult<IEnumerable<SelectListDTO>> GetRoles()
         {
             var result = roleManager.Roles.Select(p => new SelectListDTO { Id = p.Id, Name = p.Name }).AsEnumerable();
@@ -34,10 +33,9 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ApiResult<RoleDTO>> CreateRole(RoleDTO model)
         {
-            var role = new IdentityRole()
+            var role = new ApplicationRole()
             {
                 Id = model.Id,
                 Name = model.Name
@@ -52,7 +50,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<ApiResult> RemoveRole(string roleName)
         {
             var role = await roleManager.FindByNameAsync(roleName);

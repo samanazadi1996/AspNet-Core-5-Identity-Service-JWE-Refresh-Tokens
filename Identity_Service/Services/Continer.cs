@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Services.CryptographyDomain;
 using Services.JWTDomain;
+using Services.MailDomain;
 using Services.RefreshTokenDomain;
 
 namespace Services
@@ -12,6 +13,7 @@ namespace Services
             services.AddJWTService();
             services.AddRefreshTokenServices();
             services.AddTextEncryptionServices();
+            services.AddMailService();
 
             return services;
         }

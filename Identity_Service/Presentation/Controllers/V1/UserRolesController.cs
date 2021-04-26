@@ -15,13 +15,12 @@ namespace Presentation.Controllers.V1
     [ApiController]
     [ApiResultFilter]
     [Route("api/v1/[controller]/[action]")]
-    [Authorize]
     public class UserRolesController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<ApplicationRole> roleManager;
 
-        public UserRolesController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserRolesController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -49,7 +48,6 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpDelete]
-        [Authorize]
         public async Task<ApiResult> RemoveUserRole(string userName, string roleName)
         {
             var user = await userManager.FindByNameAsync(userName);

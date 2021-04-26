@@ -5,6 +5,7 @@
         public JwtSettings JwtSettings { get; set; }
         public IdentitySettings IdentitySettings { get; set; }
         public EncryptionSettings EncryptionSettings { get; set; }
+        public MailSettings MailSettings { get; set; }
     }
 
     public class JwtSettings
@@ -29,6 +30,15 @@
     public class EncryptionSettings
     {
         public string Key { get; set; }
+    }
+    public class MailSettings
+    {
+        public string EmailFrom { get; set; }
+        public string SmtpHost { get; set; }
+        public int SmtpPort { get; set; }
+        public string SmtpUser { get; set; }
+        public string SmtpPass { get; set; }
+        public string DisplayName { get; set; }
     }
 
 }

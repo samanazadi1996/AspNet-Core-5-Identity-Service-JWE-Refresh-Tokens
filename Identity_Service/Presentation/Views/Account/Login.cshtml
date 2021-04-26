@@ -1,66 +1,25 @@
 ﻿@model SignInViewModel
-@{
-    ViewData["Title"] = "login";
-}
-<div class="body">
-    <div class="veen">
-        <div class="login-btn splits">
-            <p>Already an user?</p>
-            <button class="active">Login</button>
-        </div>
-        <div class="rgstr-btn splits">
-            <p>Don't have an account?</p>
-            <button>Register</button>
-        </div>
-        <div class="wrapper">
-            <form id="login" method="post" tabindex="500">
-                <input asp-for="Key" type="hidden">
-                <h3>Login</h3>
-                <div class="mail">
-                    <input asp-for="UserName" autocomplete="off" value="saman">
-                    <label asp-for="UserName">Username</label>
-                    <div>
-                        <span asp-validation-for="UserName" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="passwd">
-                    <input asp-for="Password" autocomplete="off" value="123456">
-                    <label asp-for="Password">Password</label>
-                    <div>
+@{ ViewData["Title"] = "ورود"; }
+<div class="global-container">
+    <div class="card login-form">
+        <div class="card-body">
+            <h3 class="card-title text-center">ورود</h3>
+            <div class="card-text text-right">
+                <form method="post">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">نام کاربری</label>
+                        <input asp-for="UserName" class="form-control form-control-sm" aria-describedby="emailHelp">
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-                </div>
-                <div class="ReMemberMe text-left">
-                    <input asp-for="ReMemberMe" autocomplete="off" style="width: 20px;margin-left: 20px">
-                    <label asp-for="ReMemberMe">ReMemberMe</label>
-                </div>
-                <div class="submit">
-                    <button class="dark">Login</button>
-                </div>
-            </form>
-            <form id="register" tabindex="502">
-                <h3>Register</h3>
-                <div class="name">
-                    <input type="text" name="">
-                    <label>Full Name</label>
-                </div>
-                <div class="mail">
-                    <input type="text" name="">
-                    <label>Mail</label>
-                </div>
-                <div class="uid">
-                    <input type="text" name="">
-                    <label>User Name</label>
-                </div>
-                <div class="passwd">
-                    <input type="password" name="">
-                    <label>Password</label>
-                </div>
-                <div class="submit">
-                    <button class="dark">Register</button>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">گذرواژه</label>
+                        <a asp-action="ForgotPassword" style="float:left;font-size:12px;">Forgot password?</a>
+                        <input asp-for="Password" type="password" class="form-control form-control-sm">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">ورود</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>

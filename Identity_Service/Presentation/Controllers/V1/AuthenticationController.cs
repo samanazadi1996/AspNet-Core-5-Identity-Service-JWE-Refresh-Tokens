@@ -25,12 +25,12 @@ namespace Presentation.Controllers.V1
         private readonly IGetClaimsByTokenService getClaimsByTokenService;
         private readonly IGetRefreshTokenService getRefreshTokenService;
         private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
+        private readonly RoleManager<ApplicationRole> roleManager;
         private readonly IJwtService jwtService;
         private readonly IUpdateResreshTokenService updateResreshTokenService;
 
 
-        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService, IUpdateResreshTokenService updateResreshTokenService, RoleManager<IdentityRole> roleManager)
+        public AuthenticationController(IGetClaimsByTokenService getClaimsByTokenService, IGetRefreshTokenService getRefreshTokenService, UserManager<ApplicationUser> userManager, IJwtService jwtService, IUpdateResreshTokenService updateResreshTokenService, RoleManager<ApplicationRole> roleManager)
         {
             this.getClaimsByTokenService = getClaimsByTokenService;
             this.getRefreshTokenService = getRefreshTokenService;

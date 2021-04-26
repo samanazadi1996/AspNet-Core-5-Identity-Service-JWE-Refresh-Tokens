@@ -5,7 +5,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data.Contexts
 {
-    public class IdentityContext : IdentityDbContext<ApplicationUser>
+    public class IdentityContext :
+        IdentityDbContext<
+            ApplicationUser,
+            ApplicationRole,
+            string,
+            IdentityUserClaim<string>,
+            ApplicationUserRole,
+            IdentityUserLogin<string>,
+            IdentityRoleClaim<string>,
+            IdentityUserToken<string>>
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
@@ -21,15 +30,19 @@ namespace Data.Contexts
             builder.Entity<ApplicationUser>(entity =>
             {
                 entity.ToTable(name: "User");
+                entity.Property(x => x.FirstName).HasMaxLength(30);
+                entity.Property(x => x.LastName).HasMaxLength(30);
             });
 
-            builder.Entity<IdentityRole>(entity =>
+            builder.Entity<ApplicationRole>(entity =>
             {
                 entity.ToTable(name: "Role");
             });
-            builder.Entity<IdentityUserRole<string>>(entity =>
+            builder.Entity<ApplicationUserRole>(entity =>
             {
                 entity.ToTable("UserRoles");
+                entity.HasOne(p => p.User).WithMany(p => p.UserRoles).HasForeignKey(p => p.UserId);
+                entity.HasOne(p => p.Role).WithMany(p => p.UserRoles).HasForeignKey(p => p.RoleId);
             });
 
             builder.Entity<IdentityUserClaim<string>>(entity =>

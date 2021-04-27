@@ -6,6 +6,7 @@ namespace Entities
     public class ApplicationRole : IdentityRole<string>
     {
         public List<ApplicationUserRole> UserRoles { get; set; }
+        public List<ApplicationRoleClaim> RoleClaims { get; set; }
     }
 
 }

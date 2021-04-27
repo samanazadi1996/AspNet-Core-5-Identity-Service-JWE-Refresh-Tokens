@@ -10,5 +10,8 @@ namespace Entities
 
         public List<ApplicationUserRole> UserRoles { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; }
+        public List<ApplicationUserLogin> UserLogins { get; set; }
+        public List<ApplicationUserClaim> UserClaims { get; set; }
+        public List<ApplicationUserToken> UserTokens { get; set; }
     }
 }

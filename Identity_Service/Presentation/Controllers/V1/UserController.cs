@@ -26,16 +26,16 @@ namespace Presentation.Controllers.V1
         }
 
         [HttpGet]
-        public ApiResult<IEnumerable<SelectListDTO>> GetUsers()
+        public ApiResult<IEnumerable<UserDTO>> GetUsers()
         {
             var result = userManager.Users.Select(p => new UserDTO
             {
                 Id = p.Id,
                 UserName = p.UserName,
-                Email = p.Email,
-                PhoneNumber = p.PhoneNumber,
                 FirstName = p.FirstName,
-                LastName = p.LastName
+                LastName = p.LastName,
+                Email = p.Email,
+                PhoneNumber = p.PhoneNumber
             }).AsEnumerable();
             return Ok(result);
         }
@@ -45,6 +45,8 @@ namespace Presentation.Controllers.V1
         {
             var user = new ApplicationUser()
             {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
                 UserName = model.UserName,
                 Email = model.Email,
                 PhoneNumber = model.PhoneNumber
@@ -52,10 +54,9 @@ namespace Presentation.Controllers.V1
             var result = await userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return Ok(value: new UserDTO { Id = user.Id, UserName = user.UserName, Email = user.Email, PhoneNumber = user.PhoneNumber, Password = "****" });
+                return Ok(user);
             }
             return BadRequest();
-
         }
 
         [HttpDelete]

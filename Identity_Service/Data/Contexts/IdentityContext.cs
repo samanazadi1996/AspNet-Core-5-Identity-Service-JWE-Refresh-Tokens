@@ -1,5 +1,4 @@
 ﻿using Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,11 +9,11 @@ namespace Data.Contexts
             ApplicationUser,
             ApplicationRole,
             string,
-            IdentityUserClaim<string>,
+            ApplicationUserClaim,
             ApplicationUserRole,
-            IdentityUserLogin<string>,
-            IdentityRoleClaim<string>,
-            IdentityUserToken<string>>
+            ApplicationUserLogin,
+            ApplicationRoleClaim,
+            ApplicationUserToken>
     {
         public IdentityContext(DbContextOptions<IdentityContext> options) : base(options)
         {
@@ -38,39 +37,42 @@ namespace Data.Contexts
             {
                 entity.ToTable(name: "Role");
             });
+
             builder.Entity<ApplicationUserRole>(entity =>
             {
                 entity.ToTable("UserRoles");
-                entity.HasOne(p => p.User).WithMany(p => p.UserRoles).HasForeignKey(p => p.UserId);
-                entity.HasOne(p => p.Role).WithMany(p => p.UserRoles).HasForeignKey(p => p.RoleId);
+                entity.HasOne(p => p.User).WithMany(p => p.UserRoles).HasForeignKey(p => p.UserId).IsRequired();
+                entity.HasOne(p => p.Role).WithMany(p => p.UserRoles).HasForeignKey(p => p.RoleId).IsRequired();
             });
 
-            builder.Entity<IdentityUserClaim<string>>(entity =>
+            builder.Entity<ApplicationUserClaim>(entity =>
             {
                 entity.ToTable("UserClaims");
+                entity.HasOne(p => p.User).WithMany(p => p.UserClaims).HasForeignKey(p => p.UserId).IsRequired();
             });
 
-            builder.Entity<IdentityUserLogin<string>>(entity =>
+            builder.Entity<ApplicationUserLogin>(entity =>
             {
                 entity.ToTable("UserLogins");
+                entity.HasOne(p => p.User).WithMany(p => p.UserLogins).HasForeignKey(p => p.UserId).IsRequired();
             });
 
-            builder.Entity<IdentityRoleClaim<string>>(entity =>
+            builder.Entity<ApplicationRoleClaim>(entity =>
             {
                 entity.ToTable("RoleClaims");
+                entity.HasOne(p => p.Role).WithMany(p => p.RoleClaims).HasForeignKey(p => p.RoleId).IsRequired();
             });
 
-            builder.Entity<IdentityUserToken<string>>(entity =>
+            builder.Entity<ApplicationUserToken>(entity =>
             {
                 entity.ToTable("UserTokens");
+                entity.HasOne(p => p.User).WithMany(p => p.UserTokens).HasForeignKey(p => p.UserId).IsRequired();
             });
 
             builder.Entity<RefreshToken>(entity =>
             {
-                entity.HasOne(current => current.User)
-                .WithMany(current => current.RefreshTokens)
-                .HasForeignKey(current => current.UserId)
-                .IsRequired();
+                entity.ToTable("RefreshTokens");
+                entity.HasOne(current => current.User).WithMany(current => current.RefreshTokens).HasForeignKey(current => current.UserId).IsRequired();
             });
         }
     }

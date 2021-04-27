@@ -54,29 +54,6 @@ namespace Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleClaims",
-                schema: "Identity",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_RoleClaims_Role_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "Identity",
-                        principalTable: "Role",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RefreshTokens",
                 schema: "Identity",
                 columns: table => new
@@ -195,6 +172,38 @@ namespace Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "RoleClaims",
+                schema: "Identity",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ApplicationUserRoleRoleId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicationUserRoleUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RoleClaims_Role_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "Identity",
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_RoleClaims_UserRoles_ApplicationUserRoleUserId_ApplicationUserRoleRoleId",
+                        columns: x => new { x.ApplicationUserRoleUserId, x.ApplicationUserRoleRoleId },
+                        principalSchema: "Identity",
+                        principalTable: "UserRoles",
+                        principalColumns: new[] { "UserId", "RoleId" },
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
                 schema: "Identity",
@@ -208,6 +217,12 @@ namespace Data.Migrations
                 column: "NormalizedName",
                 unique: true,
                 filter: "[NormalizedName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RoleClaims_ApplicationUserRoleUserId_ApplicationUserRoleRoleId",
+                schema: "Identity",
+                table: "RoleClaims",
+                columns: new[] { "ApplicationUserRoleUserId", "ApplicationUserRoleRoleId" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoleClaims_RoleId",
@@ -267,11 +282,11 @@ namespace Data.Migrations
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "UserRoles",
+                name: "UserTokens",
                 schema: "Identity");
 
             migrationBuilder.DropTable(
-                name: "UserTokens",
+                name: "UserRoles",
                 schema: "Identity");
 
             migrationBuilder.DropTable(

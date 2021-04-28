@@ -30,7 +30,7 @@ namespace Identity.Client.Middlewares
             var token = context.Session.GetString("token");
             if (token is not null)
             {
-                var ppp = await Authenticate(context, token);
+                var ppp = await Authenticate(token);
                 if (!ppp)
                 {
                     var refreshtoken = context.Session.GetString("refreshtoken");
@@ -39,14 +39,14 @@ namespace Identity.Client.Middlewares
                     {
                         context.Session.SetString("refreshtoken", Getrefreshtoken.Data.refreshToken);
                         context.Session.SetString("token", Getrefreshtoken.Data.token);
-                        await Authenticate(context, Getrefreshtoken.Data.token);
+                        await Authenticate(Getrefreshtoken.Data.token);
                     }
                 }
             }
             await next.Invoke(context);
         }
 
-        private async Task<bool> Authenticate(HttpContext context, string token)
+        private async Task<bool> Authenticate(string token)
         {
             var result = await Request<AuthenticatedUser>($"{options.Domain}api/v1/Authentication/Authenticate", "token", token);
 
@@ -56,6 +56,7 @@ namespace Identity.Client.Middlewares
                 authenticatedUser.Name = result.Data.Name;
                 authenticatedUser.UserId = result.Data.UserId;
                 authenticatedUser.Roles = result.Data.Roles;
+                authenticatedUser.Token = token;
                 return true;
             }
 
@@ -68,8 +69,6 @@ namespace Identity.Client.Middlewares
             {
                 using (var client = new HttpClient())
                 {
-                    client.Timeout = TimeSpan.FromMilliseconds(500);
-
                     var result = await client.GetAsync($"{url}?{dataType}={data}");
                     string resultContent = await result.Content.ReadAsStringAsync();
 
@@ -79,13 +78,13 @@ namespace Identity.Client.Middlewares
                         return apiResult;
                     }
 
-                    return null;
+                    return new ApiResult<T>() { IsSuccess = false };
                 }
 
             }
             catch (Exception)
             {
-                return null;
+                return new ApiResult<T>() { IsSuccess = false };
             }
         }
 

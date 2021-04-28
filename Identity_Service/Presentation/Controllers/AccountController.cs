@@ -1,7 +1,7 @@
 ﻿using Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Presentation.Infrastracture;
 using Presentation.Models.Account;
 using Presentation.Models.Email;
@@ -43,12 +43,13 @@ namespace Presentation.Controllers
             this.roleManager = roleManager;
         }
 
-        public IActionResult Login(string Key)
+        public IActionResult Login(string UCB)
         {
-            return View(new SignInViewModel() { Key = Key });
+            return View(new SignInViewModel() { UCB = UCB });
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(SignInViewModel model)
         {
             if (!ModelState.IsValid)
@@ -56,7 +57,11 @@ namespace Presentation.Controllers
 
             var user = await userManager.FindByNameAsync(model.UserName);
             if (user is null)
-                ModelState.AddModelError(nameof(model.UserName), "نام کاربری اشتباه است");
+            {
+                user = await userManager.FindByEmailAsync(model.UserName);
+                if (user is null)
+                    ModelState.AddModelError(nameof(model.UserName), "نام کاربری اشتباه است");
+            }
 
             var IsPasswordValid = await userManager.CheckPasswordAsync(user, model.Password);
             if (!IsPasswordValid)
@@ -70,7 +75,7 @@ namespace Presentation.Controllers
                 NameValueCollection datacollection = new NameValueCollection();
                 datacollection.Add("token", token);
                 datacollection.Add("refreshtoken", Convert.ToString(RefreshtokenGuid));
-                var urlCallBack = decryptService.Decrypt(model.Key);
+                var urlCallBack = decryptService.Decrypt(model.UCB);
                 var form = FormPostExtention.PreparePostForm(urlCallBack, datacollection);
                 return Content(form, "text/html");
             }
@@ -89,39 +94,39 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult ForgotPassword()
+        public IActionResult ForgotPassword(string UCB)
         {
-            var model = new ForgotPasswordDTO()
-            {
-                sessionId = DateTime.Now.Ticks
-            };
-
-            return View(model);
+            return View(new ForgotPasswordDTO() { UCB = UCB });
         }
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO ForgotPassword, string txtCaptcha)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO ForgotPassword)
         {
+            var captchaText = TextTools.GetEnglishNumber(ForgotPassword.txtCaptcha);
+            var session = HttpContext.Session.GetString("Captcha");
+            if (string.IsNullOrEmpty(session) || session != captchaText)
+            {
+                ModelState.AddModelError("txtCaptcha", "کد امنیتی را اشتباه وارد کردید");
+            }
+
             if (ModelState.IsValid)
             {
-
                 var user = await userManager.FindByEmailAsync(ForgotPassword.UserName);
                 if (user is null)
                 {
                     ModelState.AddModelError("UserName", "  کاربری با این مشخصات یافت نشد .");
                     return View(ForgotPassword);
                 }
+                var Token = await userManager.GeneratePasswordResetTokenAsync(user);
 
-                //var captchaText = TextTools.GetEnglishNumber(txtCaptcha);
-                //var session = HttpContext.Session.GetString("Captcha" + ForgotPassword.sessionId);
-                //if (string.IsNullOrEmpty(session) || session != captchaText)
-                //{
-                //    ModelState.AddModelError("", "کد امنیتی را اشتباه وارد کردید");
-                //}
+                var request = HttpContext.Request;
+                var Domain = $"{request.Scheme}://{request.Host}";
 
                 var emailContent = new EmailContentDto()
                 {
                     FirstName = user.FirstName,
                     LastName = user.LastName,
-                    Token = await userManager.GeneratePasswordResetTokenAsync(user),
+                    Link = $"{Domain}/Account/ResetPassword?username={user.UserName}&token={Token}&UCB={ForgotPassword.UCB}"
                 };
                 var Body = await this.RenderViewAsync("_ResetPasswordEmailContent", emailContent);
 
@@ -133,15 +138,17 @@ namespace Presentation.Controllers
             return View(ForgotPassword);
         }
 
-        public IActionResult ResetPassword(string username, string token)
+        public IActionResult ResetPassword(string username, string token, string UCB)
         {
             return View(new ResetPasswordDTO()
             {
                 UserName = username,
-                Token = token
+                Token = token,
+                UCB = UCB
             });
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ResetPassword(ResetPasswordDTO model)
         {
             var user = await userManager.FindByNameAsync(model.UserName);
@@ -156,22 +163,24 @@ namespace Presentation.Controllers
                 var result = await userManager.ResetPasswordAsync(user, model.Token, model.Password);
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Login");
+                    return RedirectToAction("Login", new { UCB = model.UCB });
                 }
-
-                return View();
+                else
+                {
+                    ModelState.AddModelError("", "خطایی رخ داد");
+                }
             }
-            return BadRequest();
 
+            return View(model);
         }
 
         public async Task<IActionResult> qqq(SignInViewModel model)
         {
             var user = new ApplicationUser() { Email = "saman@admin.com", UserName = "saman_azadi", FirstName = "Saman", LastName = "Azadi", PhoneNumber = "09123456789" };
             await userManager.CreateAsync(user, "123456");
-            await roleManager.CreateAsync(new ApplicationRole() { Id = "admin", Name = "admin" });
-            await roleManager.CreateAsync(new ApplicationRole() { Id = "developer", Name = "developer" });
-            await roleManager.CreateAsync(new ApplicationRole() { Id = "customer", Name = "customer" });
+            await roleManager.CreateAsync(new ApplicationRole() { Name = "admin" });
+            await roleManager.CreateAsync(new ApplicationRole() { Name = "developer" });
+            await roleManager.CreateAsync(new ApplicationRole() { Name = "customer" });
             await userManager.AddToRoleAsync(user, "admin");
             await userManager.AddToRoleAsync(user, "developer");
 

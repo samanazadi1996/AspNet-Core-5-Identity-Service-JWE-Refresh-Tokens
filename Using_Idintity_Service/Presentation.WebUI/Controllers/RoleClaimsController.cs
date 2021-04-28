@@ -1,9 +1,10 @@
 ﻿using Identity.Client;
 using Identity.Client.Attributes;
+using Identity.Client.Services.ApiRequest;
 using Microsoft.AspNetCore.Mvc;
-using Presentation.WebUI.Infrastructure;
 using Presentation.WebUI.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Presentation.WebUI.Controllers
 {
@@ -11,14 +12,16 @@ namespace Presentation.WebUI.Controllers
     public class RoleClaimsController : Controller
     {
         private readonly AuthenticatedUser authenticatedUser;
+        private readonly IApiRequestService apiRequestService;
 
-        public RoleClaimsController(AuthenticatedUser authenticatedUser)
+        public RoleClaimsController(AuthenticatedUser authenticatedUser, IApiRequestService apiRequestService)
         {
             this.authenticatedUser = authenticatedUser;
+            this.apiRequestService = apiRequestService;
         }
-        public IActionResult Index(string roleName)
+        public async Task<IActionResult> Index(string roleName)
         {
-            var result = ApiRequestExtention.RequestGet<List<string>>(HttpContext, $"api/v1/RoleClaims/GetRoleClaims?roleName={roleName}").Data;
+            var result = (await apiRequestService.RequestGet<List<string>>($"api/v1/RoleClaims/GetRoleClaims?roleName={roleName}")).Data;
             ViewBag.roleName = roleName;
             return View(result);
         }
@@ -28,18 +31,18 @@ namespace Presentation.WebUI.Controllers
             return View(new RoleClaimDTO() { RoleName = roleName });
         }
         [HttpPost]
-        public IActionResult Create(RoleClaimDTO model)
+        public async Task<IActionResult> Create(RoleClaimDTO model)
         {
-            var result = ApiRequestExtention.RequestPost<string>(HttpContext, "api/v1/RoleClaims/CreateRoleClaim", model);
+            var result = await apiRequestService.RequestPost<string>("api/v1/RoleClaims/CreateRoleClaim", model);
             if (result is not null && result.IsSuccess)
             {
                 return RedirectToAction("Index", new { roleName = model.RoleName });
             }
             return View(model);
         }
-        public IActionResult RemoveClaim(string roleName, string claimValue)
+        public async Task<IActionResult> RemoveClaim(string roleName, string claimValue)
         {
-            ApiRequestExtention.RequestDelete<string>(HttpContext, $"api/v1/RoleClaims/RemoveClaim?roleName={roleName}&claimValue={claimValue}");
+            await apiRequestService.RequestDelete($"api/v1/RoleClaims/RemoveClaim?roleName={roleName}&claimValue={claimValue}");
             return RedirectToAction("Index", new { roleName = roleName });
         }
 

@@ -15,8 +15,6 @@ namespace Presentation.Models.Account
         public string Password { get; set; }
 
         public bool ReMemberMe { get; set; }
-
-        [Required]
-        public string Key { get; set; }
+        public string UCB { get; set; }
     }
 }

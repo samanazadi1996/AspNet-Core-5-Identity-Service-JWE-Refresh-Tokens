@@ -35,6 +35,7 @@ namespace Presentation
             services.AddApplicationServices();
             services.AddJwtAuthentication(_SiteSettings.JwtSettings);
             services.AddSwagger();
+            services.AddSession();
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
 
@@ -59,7 +60,7 @@ namespace Presentation
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseAuthentication();
             app.UseMvc(routes => routes.MapRoute(
                     name: "default",

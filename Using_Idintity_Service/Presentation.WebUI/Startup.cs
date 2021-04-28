@@ -31,7 +31,7 @@ namespace Presentation.WebUI
             services.AddScoped<IAutorizeService, AutorizeService>();
             services.AddApiAuthentication(p =>
             p.MapApiAuthenticationOptions(
-                domain: "http://5.253.24.60:5006/",
+                domain: "https://localhost:5001/",
                 loginPath: "/account/login")
             );
         }

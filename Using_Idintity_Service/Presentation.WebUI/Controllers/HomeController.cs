@@ -17,8 +17,6 @@ namespace Presentation.WebUI.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.token = HttpContext.Session.GetString("token");
-
             return View();
         }
 

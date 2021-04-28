@@ -1,6 +1,7 @@
 ﻿using Identity.Client;
 using Identity.Client.DTO;
 using Identity.Client.Middlewares;
+using Identity.Client.Services.ApiRequest;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -16,6 +17,9 @@ namespace Presentation.WebUI.Infrastructure.Authentication.Services
 
             services.AddScoped<AuthenticatedUser>();
             services.AddScoped<ApiAuthentication>();
+
+            services.AddTransient<IApiRequestService, ApiRequestService>();
+
         }
     }
 }

@@ -9,18 +9,18 @@ namespace Presentation.Controllers
 {
     public class ReCaptchaController : Controller
     {
-        public void Captcha(long id)
+        public void Captcha()
         {
             string number = new Random().Next(1000, 9999).ToString();
             ViewBag.Number = number;
-            HttpContext.Session.SetString("Captcha" + id, number);
+            HttpContext.Session.SetString("Captcha", number);
         }
 
-        public FileContentResult ReCaptcha(long id)
+        public FileContentResult ReCaptcha()
         {
-            Captcha(id);
+            Captcha();
 
-            var session = HttpContext.Session.GetString("Captcha" + id);
+            var session = HttpContext.Session.GetString("Captcha");
 
             if (!string.IsNullOrEmpty(session))
             {

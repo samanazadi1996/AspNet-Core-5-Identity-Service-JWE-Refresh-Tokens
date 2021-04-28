@@ -8,17 +8,19 @@ namespace Presentation.WebUI.Controllers
     public class AccountController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApiAuthenticationOptions options;
 
-        public AccountController(ILogger<HomeController> logger)
+        public AccountController(ILogger<HomeController> logger, ApiAuthenticationOptions options)
         {
             _logger = logger;
+            this.options = options;
         }
 
         public IActionResult Login()
         {
             string key = "tJi7v+n40ToUVbuNUU1MOU5DoUZNW3pSTS0JJyESgw3CXob/NSjz2KVJBfnV2hZG";
 
-            return Redirect($"https://localhost:44390/account/login?key={key}");
+            return Redirect($"{options.Domain}account/login?UCB={key}");
         }
 
         [HttpPost]

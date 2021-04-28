@@ -16,7 +16,7 @@ namespace Presentation.Models.ResetPassword
         [Compare("Password", ErrorMessage = "کلمه ی عبور با تکرار آن همخوانی ندارد")]
         public string ConfirmPassword { get; set; }
 
-        public string Code { get; set; }
+        public string UCB { get; set; }
     }
 
 }

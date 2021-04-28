@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SelectListDTO>
+﻿@model IEnumerable<UserDTO>
 <div class="col-md-12 form-group">
     <a asp-action="Create" class="btn btn-success">Create</a>
 </div>
@@ -12,11 +12,11 @@
     {
         <tr>
             <td>@item.Id</td>
-            <td>@item.Name</td>
+            <td>@item.UserName</td>
             <td>
-                <a href="/UserClaims/Index?username=@item.Name" class="btn btn-warning">claims</a>
-                <a href="/UserRoles/Index?username=@item.Name" class="btn btn-warning">roles</a>
-                <a href="/User/RemoveUser?userName=@item.Name" class="btn btn-danger">delete</a>
+                <a href="/UserClaims/Index?username=@item.UserName" class="btn btn-warning">claims</a>
+                <a href="/UserRoles/Index?username=@item.UserName" class="btn btn-warning">roles</a>
+                <a href="/User/RemoveUser?userName=@item.UserName" class="btn btn-danger">delete</a>
             </td>
         </tr>
     }

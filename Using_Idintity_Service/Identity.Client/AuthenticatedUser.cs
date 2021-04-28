@@ -8,6 +8,7 @@ namespace Identity.Client
         public bool IsAuthenticated { get; set; }
         public string UserId { get; set; }
         public string Name { get; set; }
+        public string Token { get; set; }
         public List<string> Roles { get; set; }
 
         public bool IsInRole(string role)

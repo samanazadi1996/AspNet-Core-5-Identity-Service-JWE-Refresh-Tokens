@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services;
+using System;
 using WebFramework.Configuration;
 using WebFramework.Middlewares;
 using WebFramework.Swagger;
@@ -35,7 +36,7 @@ namespace Presentation
             services.AddApplicationServices();
             services.AddJwtAuthentication(_SiteSettings.JwtSettings);
             services.AddSwagger();
-            services.AddSession();
+            services.AddSession(o => o.IOTimeout = TimeSpan.FromMinutes(5));
             services.AddMvc(option => option.EnableEndpointRouting = false);
 
 

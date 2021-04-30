@@ -96,7 +96,7 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult ForgotPassword(string UCB)
         {
-            return View(new ForgotPasswordDTO() { UCB = UCB });
+            return View(new ForgotPasswordDTO() { UCB = UCB, sessionId = DateTime.Now.Ticks });
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

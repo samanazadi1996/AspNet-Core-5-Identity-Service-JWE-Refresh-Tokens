@@ -2,6 +2,7 @@
 using Services.CryptographyDomain;
 using Services.JWTDomain;
 using Services.MailDomain;
+using Services.ReCaptchaDomain;
 using Services.RefreshTokenDomain;
 
 namespace Services
@@ -14,6 +15,7 @@ namespace Services
             services.AddRefreshTokenServices();
             services.AddTextEncryptionServices();
             services.AddMailService();
+            services.AddReCaptchaService();
 
             return services;
         }

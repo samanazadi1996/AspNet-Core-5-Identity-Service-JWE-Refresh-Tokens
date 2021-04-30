@@ -1,0 +1,33 @@
+﻿<table dir="rtl">
+    <tr>
+        <td>
+            <div class="form-group" id="imgDiv" style="position: relative;float: right;height: 75px;width: 100px;transition:500ms; background: url(/ReCaptcha/reCaptcha?id=@(Model.sessionId))">
+                <img onclick="reCaptcha()" src="~/Images/refresh.png" class="bg-soft-info spin-anything" style="width:20px;height:20px;bottom:5px;left:5px;position:absolute;" />
+            </div>
+        </td>
+        <td class="pr-2">
+            <label>کد امنیتی</label>
+            <div>
+                <input autocomplete="off" class="form-control pl-5" type="text" name="txtCaptcha">
+            </div>
+        </td>
+    </tr>
+</table>
+<script>
+    function reCaptcha() {
+        $.ajax({
+        	type: "GET",
+            url: '/ReCaptcha/captcha/',
+        	data: {id:@Model.sessionId},
+        	success: function (response) {
+        		var d = new Date();
+                var newImage = '/ReCaptcha/reCaptcha?id=@(Model.sessionId)&a=' + d.getMinutes() + d.getSeconds() + d.getMilliseconds();
+                document.getElementById('imgDiv').style.background = "url(" + newImage+")"
+        	},
+        	error: function(xhr) {
+        		var err = eval("(" + xhr.responseText + ")");
+        		alert(err.Message);
+        	}
+        });
+    }
+</script>

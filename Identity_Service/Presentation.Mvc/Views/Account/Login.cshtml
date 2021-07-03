@@ -1,0 +1,30 @@
+﻿@model Presentation.Mvc.Models.Account.SignInViewModel
+@{ ViewData["Title"] = "ورود"; }
+<div class="global-container">
+    <div class="card login-form">
+        <div class="card-body">
+            <h3 class="card-title text-center">ورود</h3>
+            <div class="card-text text-right">
+                <form method="post" asp-antiforgery="true">
+                    <input type="hidden" asp-for="UCB" />
+                    <div class="form-group">
+                        <label>نام کاربری</label>
+                        <input asp-for="UserName" class="form-control form-control-sm">
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>گذرواژه</label>
+                        <input asp-for="Password" type="password" class="form-control form-control-sm">
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block">ورود</button>
+                    </div>
+                    <div class="form-group text-center">
+                        <a asp-action="ForgotPassword" asp-route-UCB="@Model.UCB">گذرواژه خود را فراموش کردید ؟</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

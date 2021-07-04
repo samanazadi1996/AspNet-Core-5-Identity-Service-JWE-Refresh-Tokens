@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation", "Presentation\Presentation.csproj", "{57D79C02-474B-4B77-ADD6-EFA4A2F3A452}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{C8128093-0010-419C-8D12-EE9167F77349}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", "{AFED7A71-9855-4593-BAC4-204D86604679}"
@@ -23,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IdentityTests", "IdentityTe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services Tests", "Services Tests\Services Tests.csproj", "{E489F799-A47F-4F3D-A4D2-14E2F6438B1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Api", "Presentation.Api\Presentation.Api.csproj", "{6437FACF-9670-4644-8724-0C4421651D40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Api", "Presentation.Api\Presentation.Api.csproj", "{6437FACF-9670-4644-8724-0C4421651D40}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Presentation.Mvc", "Presentation.Mvc\Presentation.Mvc.csproj", "{5923F179-D0F2-466E-A96C-9D5A43F9AD38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Presentation.Mvc", "Presentation.Mvc\Presentation.Mvc.csproj", "{5923F179-D0F2-466E-A96C-9D5A43F9AD38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{57D79C02-474B-4B77-ADD6-EFA4A2F3A452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57D79C02-474B-4B77-ADD6-EFA4A2F3A452}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57D79C02-474B-4B77-ADD6-EFA4A2F3A452}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57D79C02-474B-4B77-ADD6-EFA4A2F3A452}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8128093-0010-419C-8D12-EE9167F77349}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8128093-0010-419C-8D12-EE9167F77349}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8128093-0010-419C-8D12-EE9167F77349}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -78,7 +72,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{57D79C02-474B-4B77-ADD6-EFA4A2F3A452} = {DAC4A63F-17F6-49CE-B5E3-E74562CFCB01}
 		{C8128093-0010-419C-8D12-EE9167F77349} = {DAC4A63F-17F6-49CE-B5E3-E74562CFCB01}
 		{AFED7A71-9855-4593-BAC4-204D86604679} = {DAC4A63F-17F6-49CE-B5E3-E74562CFCB01}
 		{917A4573-4A5B-443E-9CB2-4FF7697ECEAB} = {DAC4A63F-17F6-49CE-B5E3-E74562CFCB01}

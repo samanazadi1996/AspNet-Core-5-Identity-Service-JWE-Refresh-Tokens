@@ -5,8 +5,6 @@ namespace Presentation.Api.Models.UserClaims
 {
     public class UserClaimsDTO
     {
-        public string UserName { get; set; }
-
         public List<ClaimDTO> Claims { get; set; }
     }
 }

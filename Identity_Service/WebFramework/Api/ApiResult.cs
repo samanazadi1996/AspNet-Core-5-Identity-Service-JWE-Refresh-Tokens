@@ -1,35 +1,39 @@
-using Common.ApiResultCodeEnum;
-using Common.Utilities;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace WebFramework.Api
 {
-    public class ApiResult
+    public class ApiResult : IActionResult
     {
-        public bool IsSuccess { get; set; }
-        public ApiResultStatusCode StatusCode { get; set; }
-
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public string Message { get; set; }
-
-        public ApiResult(bool isSuccess, ApiResultStatusCode statusCode, string message = null)
+        public ApiResult(object data, string message, int? status)
         {
-            IsSuccess = isSuccess;
-            StatusCode = statusCode;
-            Message = message ?? statusCode.ToDisplay();
+            Message = message ?? ((HttpStatusCode)status).ToString();
+            Status = status;
+            Data = data;
         }
+        protected int? Status { get; set; }
+        public string Message { get; set; }
+        public object Data { get; set; }
+        public async Task ExecuteResultAsync(ActionContext context)
+        {
+            var objectResult = new ObjectResult(new ApiResult(Data, Message, Status))
+            {
+                StatusCode = Status ?? context.HttpContext.Response.StatusCode
+            };
 
+            await objectResult.ExecuteResultAsync(context);
+        }
         #region Implicit Operators
         public static implicit operator ApiResult(OkResult result)
         {
-            return new ApiResult(true, ApiResultStatusCode.Success);
+            return new ApiResult(null, null, result.StatusCode);
         }
 
         public static implicit operator ApiResult(BadRequestResult result)
         {
-            return new ApiResult(false, ApiResultStatusCode.BadRequest);
+            return new ApiResult(null, null, result.StatusCode);
         }
 
         public static implicit operator ApiResult(BadRequestObjectResult result)
@@ -40,51 +44,46 @@ namespace WebFramework.Api
                 var errorMessages = errors.SelectMany(p => (string[])p.Value).Distinct();
                 message = string.Join(" | ", errorMessages);
             }
-            return new ApiResult(false, ApiResultStatusCode.BadRequest, message);
+            return new ApiResult(null, message, result.StatusCode);
         }
 
         public static implicit operator ApiResult(ContentResult result)
         {
-            return new ApiResult(true, ApiResultStatusCode.Success, result.Content);
+            return new ApiResult(null, null, result.StatusCode);
         }
 
         public static implicit operator ApiResult(NotFoundResult result)
         {
-            return new ApiResult(false, ApiResultStatusCode.NotFound);
+            return new ApiResult(null, null, result.StatusCode);
         }
         #endregion
-    }
 
+    }
     public class ApiResult<TData> : ApiResult where TData : class
     {
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-        public TData Data { get; set; }
-
-        public ApiResult(bool isSuccess, ApiResultStatusCode statusCode, TData data, string message = null)
-            : base(isSuccess, statusCode, message)
+        public ApiResult(TData data, string message = null, int? status = null) : base(data, message, status)
         {
             Data = data;
         }
 
-        #region Implicit Operators
         public static implicit operator ApiResult<TData>(TData data)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, data);
+            return new ApiResult<TData>(data, null, (int)HttpStatusCode.OK);
         }
 
         public static implicit operator ApiResult<TData>(OkResult result)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, null);
+            return new ApiResult<TData>(null, null, result.StatusCode);
         }
 
         public static implicit operator ApiResult<TData>(OkObjectResult result)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, (TData)result.Value);
+            return new ApiResult<TData>((TData)result.Value, null, result.StatusCode);
         }
 
         public static implicit operator ApiResult<TData>(BadRequestResult result)
         {
-            return new ApiResult<TData>(false, ApiResultStatusCode.BadRequest, null);
+            return new ApiResult<TData>(null, null, result.StatusCode);
         }
 
         public static implicit operator ApiResult<TData>(BadRequestObjectResult result)
@@ -95,28 +94,22 @@ namespace WebFramework.Api
                 var errorMessages = errors.SelectMany(p => (string[])p.Value).Distinct();
                 message = string.Join(" | ", errorMessages);
             }
-            return new ApiResult<TData>(false, ApiResultStatusCode.BadRequest, null, message);
-        }
-
-        public static implicit operator ApiResult<TData>(ContentResult result)
-        {
-            return new ApiResult<TData>(true, ApiResultStatusCode.Success, null, result.Content);
+            return new ApiResult<TData>(null, message, result.StatusCode);
         }
 
         public static implicit operator ApiResult<TData>(NotFoundResult result)
         {
-            return new ApiResult<TData>(false, ApiResultStatusCode.NotFound, null);
+            return new ApiResult<TData>(null, null, result.StatusCode);
         }
 
         public static implicit operator ApiResult<TData>(NotFoundObjectResult result)
         {
-            return new ApiResult<TData>(false, ApiResultStatusCode.NotFound, (TData)result.Value);
+            return new ApiResult<TData>((TData)result.Value, null, result.StatusCode);
         }
         public static implicit operator ApiResult<TData>(CreatedAtActionResult result)
         {
-            return new ApiResult<TData>(true, ApiResultStatusCode.CreatedData, (TData)result.Value);
+            return new ApiResult<TData>((TData)result.Value, null, result.StatusCode);
         }
-        #endregion
-    }
 
+    }
 }

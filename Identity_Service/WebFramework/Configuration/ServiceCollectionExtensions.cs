@@ -1,6 +1,4 @@
 ﻿using Common;
-using Common.ApiResultCodeEnum;
-using Common.Exceptions;
 using Common.Utilities;
 using Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Linq;
-using System.Net;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,8 +80,8 @@ namespace WebFramework.Configuration
                     OnChallenge = context =>
                     {
                         if (context.AuthenticateFailure != null)
-                            throw new AppException(ApiResultStatusCode.UnAuthorized, "Authenticate failure.", HttpStatusCode.Unauthorized, context.AuthenticateFailure, null);
-                        throw new AppException(ApiResultStatusCode.UnAuthorized, "You are unauthorized to access this resource.", HttpStatusCode.Unauthorized);
+                            throw new UnauthorizedAccessException("Authenticate failure.");
+                        throw new UnauthorizedAccessException("You are unauthorized to access this resource.");
                     }
                 };
             });

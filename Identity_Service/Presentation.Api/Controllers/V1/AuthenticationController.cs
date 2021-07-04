@@ -19,9 +19,10 @@ namespace Presentation.Api.Controllers.V1
     [ApiVersion("1")]
     [ApiController]
     [ApiResultFilter]
-    [Route("api/v1/[controller]/[action]")]
+    [Route("api/v1/[controller]")]
     public class AuthenticationController : ControllerBase
     {
+        #region Constructor
         private readonly IGetClaimsByTokenService getClaimsByTokenService;
         private readonly IGetRefreshTokenService getRefreshTokenService;
         private readonly UserManager<ApplicationUser> userManager;
@@ -39,8 +40,10 @@ namespace Presentation.Api.Controllers.V1
             this.updateResreshTokenService = updateResreshTokenService;
             this.roleManager = roleManager;
         }
+        #endregion
 
-        [HttpGet]
+        #region Authentication
+        [HttpGet("Authenticate/{token}")]
         public ApiResult<ResponseAuthorizeDTO> Authenticate(string token)
         {
             var result = getClaimsByTokenService.Get(token);
@@ -59,7 +62,7 @@ namespace Presentation.Api.Controllers.V1
             return Ok(response);
         }
 
-        [HttpGet]
+        [HttpGet("RefreshToken/{refreshToken}")]
         public async Task<ApiResult<TokensDTO>> RefreshToken(Guid refreshToken)
         {
             var myIp = GetCurrentIpAddressExtention.Get(HttpContext);
@@ -75,28 +78,6 @@ namespace Presentation.Api.Controllers.V1
 
             return Ok(new TokensDTO() { token = newJWT, refreshToken = newRefreshToken });
         }
-
-        [HttpGet]
-        public async Task<ApiResult<IEnumerable<string>>> GetAllPermission(string userName)
-        {
-            List<string> Permissions = new();
-
-            var user = await userManager.FindByNameAsync(userName);
-            var rolesName = await userManager.GetRolesAsync(user);
-            var userClaims = await userManager.GetClaimsAsync(user);
-            foreach (var roleName in rolesName)
-            {
-                var role = await roleManager.FindByNameAsync(roleName);
-                var RoleClaims = await roleManager.GetClaimsAsync(role);
-                foreach (var item in RoleClaims)
-                    Permissions.Add(item.Value);
-            }
-
-            foreach (var item in userClaims)
-                Permissions.Add(item.Value);
-
-            return Ok(Permissions);
-        }
-
+        #endregion
     }
 }
